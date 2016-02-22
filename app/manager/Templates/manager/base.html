@@ -93,8 +93,8 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Ангилал</a></li>
-            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Үүсгэх</a></li>
+            <li><a href="{% url 'manager_rank' %}"><i class="fa fa-circle-o"></i> Ангилал</a></li>
+            <li><a href="{% url 'manager_competition' %}"><i class="fa fa-circle-o"></i> Үүсгэх</a></li>
           </ul>
         </li>
         <li>
@@ -125,8 +125,8 @@
   </aside>
   {% endblock %}
   <div class="content-wrapper">
+    {% block content %}
     <section class="content">
-      {% block content %}
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <div class="small-box bg-aqua">
@@ -177,8 +177,8 @@
           </div>
         </div>
       </div>
-      {% endblock %}
     </section>
+    {% endblock %}
   </div>
   {% block footer %}
   <footer class="main-footer">
@@ -188,6 +188,7 @@
     <strong>Copyright &copy; 2014-2015.</strong>
   </footer>
   {% endblock %}
+  <div class="control-sidebar-bg"></div>
 </div>
 {% block javascript %}
 <script src="{% static 'assets/assets/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>

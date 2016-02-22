@@ -2,11 +2,13 @@
 
 import jsonpickle
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import FormView, TemplateView
+from django.views.generic import (FormView, TemplateView, ListView, CreateView, UpdateView)
 from django.http import HttpResponseRedirect
-from .forms import ManagerLoginForm, ManagerPasswordForm
+from .forms import ManagerLoginForm, ManagerPasswordForm, CompetitionRankForm
+from .models import (CompetitionRank, Competition)
 
-__all__ = ['ManagerLoginRequired', 'ManagerHomeView', 'ManagerLoginView', 'ManagerLoggenIn']
+__all__ = ['ManagerLoginRequired', 'ManagerHomeView', 'ManagerLoginView', 'ManagerLoggenIn', 'RankCreateView',
+'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView', 'CompetitionListView']
 
 class ManagerLoggenIn(object):
 	
@@ -75,3 +77,39 @@ class ManagerPasswordChangeView(ManagerLoginRequired, FormView):
 	def form_valid(self, form):
 		form.password_change()
 		return super(ManagerPasswordChangeView, self).form_valid(form)
+
+# Temtseenii angilal crud
+class RankListView(ManagerLoginRequired, ListView):
+	model = CompetitionRank
+	template_name = 'manager/rank/rank_list.html'
+
+
+class RankCreateView(ManagerLoginRequired, CreateView):
+	model = CompetitionRank
+	form_class = CompetitionRankForm
+	template_name = 'manager/rank/rank_form.html'
+	success_url = reverse_lazy('manager_rank')
+
+
+class RankUpdateView(ManagerLoginRequired, UpdateView):
+	model = CompetitionRank
+	form_class = CompetitionRankForm
+	template_name = 'manager/rank/rank_form.html'
+	success_url = reverse_lazy('manager_rank')
+# End temtseenii angilal crud
+
+# Temtseen Crud
+class CompetitionListView(RankListView):
+	model = Competition
+
+
+class CompetitionCreateView(RankUpdateView):
+	model = Competition
+	success_url = reverse_lazy('manager_competition')
+
+
+class CompetitionUpdateView(RankCreateView):
+	model = Competition
+	success_url = reverse_lazy('manager_competition')
+
+# End Temtseen crud
