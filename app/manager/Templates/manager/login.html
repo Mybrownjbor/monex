@@ -1,0 +1,62 @@
+{% extends 'user/register.html' %}
+{% load static %}
+  {% block content %}
+  <body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="{% url 'manager_login' %}"><b>Monex</b></a>
+    </div>
+    <div class="login-box-body">
+      <p class="login-box-msg">Нэвтрэх цонх</p>
+      {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+      <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="icon fa fa-ban"></i> {{ error }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      <form method="post">{% csrf_token %}
+        <div class="form-group-sm {% if form.username.errors %}has-error{% endif %} has-feedback">
+          {% if form.username.errors %}
+          <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>
+            {% for error in form.username.errors %}
+              {{ error }}
+            {% endfor %}
+          </label>
+          {% endif %}
+          {{ form.username }}
+          <span class="form-control-feedback"><i class="fa fa-circle-o"></i></span>
+        </div>
+        <div class="form-group-sm {% if form.password.errors %}has-error{% endif %} has-feedback">
+          {% if form.password.errors %}
+          <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>
+            {% for error in form.password.errors %}
+              {{ error }}
+            {% endfor %}
+          </label>
+          {% endif %}
+          {{ form.password }}
+          <span class="form-control-feedback"><i class="fa fa-circle-o"></i></span>
+        </div>
+        <div class="space10"></div>
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="checkbox icheck">
+              <label>
+                {{ form.remember_me }}  Намайг сана
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Нэвтрэх</button>
+          </div>
+        </div>
+      </form>
+
+      <a href="#">Нууц үгээ мартсан</a><br>
+
+    </div>
+  </div>
+  </body>
+  {% endblock %}

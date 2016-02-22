@@ -1,0 +1,117 @@
+# -*- coding:utf-8 -*-
+import jsonpickle
+from django import forms
+from .models import User
+from django.conf import settings
+from django.utils.translation import ugettext as _
+from django.forms.utils import ErrorList
+
+__all__ = ['RegisterForm', 'PasswordForm','LoginForm', 'ProfileUpdateForm']
+
+
+forms.Field.default_error_messages = {
+    'required': u"Энэ талбарыг бөглөнө үү.",
+}
+
+
+
+class LoginForm(forms.Form):
+	model = User
+	attr = 'user'
+	username = forms.CharField(label = u"Нэвтрэх нэр:", widget = forms.TextInput(attrs = {'class': 'form-control', 'placeholder': 'Э-мэйл'}))
+	password = forms.CharField(label = u"Нууц үг:", widget = forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Нууц үг'}))
+	remember_me = forms.BooleanField(required = False, initial = True)
+
+	def clean_remember_me(self):
+		remember_me = self.cleaned_data['remember_me']
+		if not remember_me:
+			settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+		else:
+			settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+		return remember_me
+
+	def clean(self):
+		cleaned_data = super(LoginForm, self).clean()
+		if self.is_valid():
+			username = cleaned_data['username']
+			password = cleaned_data['password']
+			if not self.model.objects.filter(email = username, password = password):
+				raise forms.ValidationError(_(u'Хэрэглэгчийн нэр эсвэл нууц үг буруу байна'), code='invalid')
+		return cleaned_data
+
+	def login(self, request):
+		username = self.cleaned_data['username']
+		password = self.cleaned_data['password']
+		if self.model.objects.filter(email = username, password = password):
+			user = self.model.objects.get(email = username, password = password)
+			request.session[self.attr] = jsonpickle.encode(user)
+
+
+
+class RegisterForm(forms.ModelForm):
+
+	repeat_password = forms.CharField(label = 'Нууц үг давтах:', widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Нууц үг давтах'}))
+
+	class Meta:
+		model = User
+		fields = "__all__"
+		widgets = {
+			'firstname' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Нэр'}),
+			'lastname' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Овог'}),
+			'register' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Регистер'}),
+			'email' : forms.EmailInput(attrs = {'class':'form-control', 'placeholder':'Э-мэйл'}),
+			'phone' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Утас'}),
+			'account' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Дансны дугаар'}),
+			'bank' : forms.Select(attrs = {'class':'form-control', 'placeholder':'Банк'}),
+			'password' : forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Нууц үг'}),
+		}
+		
+	def __init__(self, *args, **kwargs):
+		super(RegisterForm, self).__init__(*args, **kwargs)
+		self.fields['bank'].empty_label = 'Банк'
+
+	def clean(self):
+		cleaned_data = super(RegisterForm, self).clean()
+		if self.is_valid():
+			password = cleaned_data['password']
+			repeat_password = cleaned_data['repeat_password']
+			if not password == repeat_password:
+				raise forms.ValidationError(_(u'Нууц үг зөрүүтэй байна'), code='invalid')
+		return cleaned_data
+
+
+
+class ProfileUpdateForm(forms.ModelForm):
+
+	class Meta(RegisterForm.Meta):
+		exclude = ['password']
+
+
+
+class PasswordForm(forms.Form):
+	model = User
+	old_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Хуучин нууц үг'}))
+	new_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Шинэ нууц үг'}))
+	repeat_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Шинэ нууц үг давтах'}))
+
+	def __init__(self, *args, **kwargs):
+		self.id = kwargs.pop('id', None)
+		return super(PasswordForm, self).__init__(*args, **kwargs)
+
+	def clean(self, **kwargs):
+		cleaned_data = super(PasswordForm, self).clean(**kwargs)
+		user = self.model.objects.get(id = self.id)
+		if self.is_valid():
+			pass1 = cleaned_data['old_password']
+			pass2 = cleaned_data['new_password']
+			pass3 = cleaned_data['repeat_password']
+			if user.password != pass1:
+				raise forms.ValidationError(_(u'Нууц үг буруу байна'), code='invalid')
+			if pass2 != pass3:
+				raise forms.ValidationError(_(u'Нууц үг зөрүүтэй байна'), code='invalid')
+		return cleaned_data
+
+	def password_change(self):
+		user = self.model.objects.get(id = self.id)
+		user.password = self.cleaned_data['new_password']
+		user.save()
