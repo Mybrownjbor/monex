@@ -32,9 +32,11 @@
             <span class="hidden-xs">{{ user }}</span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="{% url 'profile' %}">Миний мэдээлэл</a></li>
-            <li><a href="{% url 'password_update' user.id %}">Нууц үг солих</a></li>
-            <li><a href="{% url 'logout' %}">Системээс гарах</a></li>
+            {% comment %}
+            <li><a href="">Миний мэдээлэл</a></li>
+            <li><a href="">Нууц үг солих</a></li>
+            <li><a href="">Системээс гарах</a></li>
+            {% endcomment %}
           </ul>
         </li>
         {% else %}
