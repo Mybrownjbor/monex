@@ -2,10 +2,11 @@
 
 from django import forms
 from app.user.forms import LoginForm, PasswordForm
-from .models import Manager, CompetitionRank
+from .models import Manager
+from app.competition.models import CompetitionRank, Competition
 
 
-__all__ = ['CompetitionRankForm', 'ManagerLoginForm', 'ManagerPasswordForm']
+__all__ = ['CompetitionForm', 'CompetitionRankForm', 'ManagerLoginForm', 'ManagerPasswordForm']
 
 class CompetitionRankForm(forms.ModelForm):
 
@@ -17,6 +18,17 @@ class CompetitionRankForm(forms.ModelForm):
 			'fee' : forms.TextInput(attrs = {'class' : 'form-control'}),
 			'shagnal' : forms.Textarea(attrs = {'class' : 'form-control'}),
 			
+		}
+
+class CompetitionForm(forms.ModelForm):
+
+	class Meta:
+		model = Competition
+		exclude = ['status', 'competition_status']
+		widgets = {
+			'rank' : forms.Select(attrs = {'class' : 'form-control'}),
+			'start' : forms.DateTimeInput(attrs = {'class' : 'form-control'}),
+			'end' : forms.DateTimeInput(attrs = {'class' : 'form-control'}),
 		}
 
 class ManagerLoginForm(LoginForm):

@@ -1,11 +1,9 @@
 # -*- coding:utf-8 -*-
-import jsonpickle
 from django import forms
 from .models import User
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.forms.utils import ErrorList
-
+from django.contrib.auth import authenticate
 __all__ = ['RegisterForm', 'PasswordForm','LoginForm', 'ProfileUpdateForm']
 
 
@@ -16,8 +14,6 @@ forms.Field.default_error_messages = {
 
 
 class LoginForm(forms.Form):
-	model = User
-	attr = 'user'
 	username = forms.CharField(label = u"Нэвтрэх нэр:", widget = forms.TextInput(attrs = {'class': 'form-control', 'placeholder': 'Э-мэйл'}))
 	password = forms.CharField(label = u"Нууц үг:", widget = forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Нууц үг'}))
 	remember_me = forms.BooleanField(required = False, initial = True)
@@ -33,19 +29,10 @@ class LoginForm(forms.Form):
 	def clean(self):
 		cleaned_data = super(LoginForm, self).clean()
 		if self.is_valid():
-			username = cleaned_data['username']
-			password = cleaned_data['password']
-			if not self.model.objects.filter(email = username, password = password):
+			user = authenticate(username = cleaned_data['username'], password = cleaned_data['password'])
+			if not user:
 				raise forms.ValidationError(_(u'Хэрэглэгчийн нэр эсвэл нууц үг буруу байна'), code='invalid')
 		return cleaned_data
-
-	def login(self, request):
-		username = self.cleaned_data['username']
-		password = self.cleaned_data['password']
-		if self.model.objects.filter(email = username, password = password):
-			user = self.model.objects.get(email = username, password = password)
-			request.session[self.attr] = jsonpickle.encode(user)
-
 
 
 class RegisterForm(forms.ModelForm):
@@ -54,10 +41,10 @@ class RegisterForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = "__all__"
+		fields = ['first_name', 'last_name', 'register', 'email', 'phone', 'account', 'bank', 'password']
 		widgets = {
-			'firstname' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Нэр'}),
-			'lastname' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Овог'}),
+			'first_name' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Нэр'}),
+			'last_name' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Овог'}),
 			'register' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Регистер'}),
 			'email' : forms.EmailInput(attrs = {'class':'form-control', 'placeholder':'Э-мэйл'}),
 			'phone' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Утас'}),
@@ -110,8 +97,3 @@ class PasswordForm(forms.Form):
 			if pass2 != pass3:
 				raise forms.ValidationError(_(u'Нууц үг зөрүүтэй байна'), code='invalid')
 		return cleaned_data
-
-	def password_change(self):
-		user = self.model.objects.get(id = self.id)
-		user.password = self.cleaned_data['new_password']
-		user.save()

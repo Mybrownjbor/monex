@@ -1,11 +1,10 @@
 # -*- coding:utf-8 -*-
 
-import jsonpickle
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (FormView, TemplateView, ListView, CreateView, UpdateView)
 from django.http import HttpResponseRedirect
-from .forms import ManagerLoginForm, ManagerPasswordForm, CompetitionRankForm
-from .models import (CompetitionRank, Competition)
+from .forms import (ManagerLoginForm, ManagerPasswordForm, CompetitionRankForm, CompetitionForm)
+from app.competition.models import (CompetitionRank, Competition)
 
 __all__ = ['ManagerLoginRequired', 'ManagerHomeView', 'ManagerLoginView', 'ManagerLoggenIn', 'RankCreateView',
 'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView', 'CompetitionListView']
@@ -37,15 +36,6 @@ class ManagerLoginView(ManagerLoggenIn, FormView):
 
 
 class ManagerLoginRequired(object):
-
-	manager = None
-
-	def dispatch(self, request, *args, **kwargs):
-		if 'manager' in request.session:
-			self.manager = jsonpickle.decode(request.session['manager'])
-			return super(ManagerLoginRequired, self).dispatch(request, *args, **kwargs)
-		else:
-			return HttpResponseRedirect('/manager/login/')
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(ManagerLoginRequired, self).get_context_data(*args, **kwargs)
@@ -101,15 +91,20 @@ class RankUpdateView(ManagerLoginRequired, UpdateView):
 # Temtseen Crud
 class CompetitionListView(RankListView):
 	model = Competition
+	template_name = 'manager/competition/competition_list.html'
 
 
-class CompetitionCreateView(RankUpdateView):
+class CompetitionCreateView(ManagerLoginRequired, CreateView):
 	model = Competition
+	form_class = CompetitionForm
+	template_name = 'manager/competition/competition_form.html'
 	success_url = reverse_lazy('manager_competition')
 
 
-class CompetitionUpdateView(RankCreateView):
+class CompetitionUpdateView(ManagerLoginRequired, UpdateView):
 	model = Competition
+	form_class = CompetitionForm
+	template_name = 'manager/competition/competition_form.html'
 	success_url = reverse_lazy('manager_competition')
 
 # End Temtseen crud

@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MONEX</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="{% static 'assets/assets/bootstrap/css/bootstrap.min.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'assets/assets/font-awesome-4.5.0/css/font-awesome.min.css' %}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{% static 'assets/assets/ionicons-master/css/ionicons.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'assets/assets/dist/css/AdminLTE.min.css' %}">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="{% static 'assets/assets/dist/css/skins/_all-skins.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/assets/plugins/pace/pace.min.css' %}">
+  </head>
+</html>
+<body class="hold-transition skin-blue layout-top-nav">
+{% block header %}{% endblock %}
+
+{% block content %}{% endblock %}
+</body>
+<script src="{% static 'assets/assets/plugins/jQuery/jQuery-2.2.0.min.js' %}"></script>
+<script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/assets/plugins/pace/pace.min.js' %}"></script>
+
+<script src="{% static 'assets/js/scroll.js' %}"></script>
+
+<script type="text/javascript">
+  $(document).ajaxStart(function() { Pace.restart(); });
+</script>
+<script type="text/javascript">
+  $(function(){
+    $("ul#ticker01").liScroll();
+  });
+</script>

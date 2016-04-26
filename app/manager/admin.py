@@ -1,8 +1,4 @@
 from django.contrib import admin
-from .models import (ManagerRoleJoin, GroupManagerRoleJoin, Manager, Competition, CompetitionRank)
+from .models import Manager
 
-admin.site.register(ManagerRoleJoin)
-admin.site.register(GroupManagerRoleJoin)
 admin.site.register(Manager)
-admin.site.register(Competition)
-admin.site.register(CompetitionRank)

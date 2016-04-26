@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('phone', models.IntegerField(verbose_name='\u0423\u0442\u0430\u0441:')),
                 ('account', models.IntegerField(verbose_name=b'\xd0\x94\xd0\xb0\xd0\xbd\xd1\x81\xd0\xbd\xd0\xb8\xd0\xb9 \xd0\xb4\xd1\x83\xd0\xb3\xd0\xb0\xd0\xb0\xd1\x80:')),
                 ('password', models.CharField(max_length=15, verbose_name='\u041d\u0443\u0443\u0446 \u04af\u0433:')),
-                ('bank', models.ForeignKey(verbose_name=b'\xd0\x91\xd0\xb0\xd0\xbd\xd0\xba:', blank=True, to='user.Bank', null=True)),
+                ('bank', models.ForeignKey(verbose_name=b'\xd0\x91\xd0\xb0\xd0\xbd\xd0\xba:', to='user.Bank')),
             ],
         ),
     ]

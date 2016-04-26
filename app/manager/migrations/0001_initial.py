@@ -2,47 +2,28 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
+import django.contrib.auth.models
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('auth', '0006_require_contenttypes_0002'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='GroupManagerRoleJoin',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=100)),
-            ],
-        ),
-        migrations.CreateModel(
             name='Manager',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('username', models.CharField(max_length=100)),
-                ('email', models.EmailField(max_length=254)),
-                ('password', models.CharField(max_length=100)),
-                ('group_manager_role_join', models.ManyToManyField(to='manager.GroupManagerRoleJoin')),
+                ('user_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
             ],
-        ),
-        migrations.CreateModel(
-            name='ManagerRoleJoin',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('value', models.IntegerField()),
-                ('name', models.CharField(max_length=100)),
+            options={
+                'abstract': False,
+            },
+            bases=('auth.user',),
+            managers=[
+                ('objects', django.contrib.auth.models.UserManager()),
             ],
-        ),
-        migrations.AddField(
-            model_name='manager',
-            name='manager_role_join',
-            field=models.ManyToManyField(to='manager.ManagerRoleJoin'),
-        ),
-        migrations.AddField(
-            model_name='groupmanagerrolejoin',
-            name='manager_role_join',
-            field=models.ManyToManyField(to='manager.ManagerRoleJoin'),
         ),
     ]

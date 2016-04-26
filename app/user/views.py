@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import jsonpickle
 from django import forms
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView, TemplateView, UpdateView
@@ -23,7 +22,6 @@ class LoginRequired(object):
 
 	def dispatch(self, request, *args, **kwargs):
 		if 'user' in request.session:
-			self.user = jsonpickle.decode(request.session['user'])
 			return super(LoginRequired, self).dispatch(request, *args, **kwargs)
 		else:
 			return HttpResponseRedirect('/')
