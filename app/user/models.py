@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from django.db import models
-from app.manager.models import UserManagement
+from django.contrib.auth.models import User
 
-__all__ = ['User', 'Bank']
+__all__ = ['SystemUser']
 
 
 class Bank(models.Model):
@@ -13,7 +13,7 @@ class Bank(models.Model):
 		return unicode(self.name)
 
 
-class User(UserManagement):
+class SystemUser(User):
 
 	register = models.CharField(max_length = 10, verbose_name = u'Регистер:', unique = True)
 	phone = models.IntegerField(verbose_name = u'Утас:')
@@ -21,4 +21,4 @@ class User(UserManagement):
 	account = models.IntegerField(verbose_name = 'Дансний дугаар:')
 	
 	def __unicode__(self):
-		return unicode(self.firstname)
+		return unicode(self.first_name)

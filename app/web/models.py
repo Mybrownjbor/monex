@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.utils import timezone
-from app.manager.models import Manager
+#from app.manager.models import Manager
 
 
 # Шуурхай мэдээ
@@ -27,7 +27,7 @@ class Medee(models.Model):
 	category = models.ForeignKey(MedeeAngilal)
 	title = models.CharField(max_length = 250)
 	body = models.TextField()
-	created_by = models.ForeignKey(Manager)
+	#created_by = models.ForeignKey(Manager)
 	created_at = models.DateTimeField(auto_now_add = True)
 	view = models.SmallIntegerField(default = 0)
 

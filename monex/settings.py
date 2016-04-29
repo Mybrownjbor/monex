@@ -38,9 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.user',
-    'app.manager',
+    #'app.manager',
     'app.web',
-    'app.competition',
+    #'app.competition',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,6 +56,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'monex.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -63,6 +64,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'app/user/Templates'),
             os.path.join(BASE_DIR, 'app/manager/Templates'),
             os.path.join(BASE_DIR, 'app/competition/Templates'),
+            os.path.join(BASE_DIR, 'app/web/Templates/web'),
             os.path.join(BASE_DIR, 'app/web/Templates'),
             ],
         'APP_DIRS': True,
@@ -124,3 +126,11 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'uuganaaaaaa@gmail.com'
+EMAIL_HOST_PASSWORD = 'niyxjmgailkagzjr'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

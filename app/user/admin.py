@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import User, Bank
-# Register your models here.
+from .models import SystemUser, Bank
 
-admin.site.register(User)
+admin.site.register(SystemUser)
 admin.site.register(Bank)

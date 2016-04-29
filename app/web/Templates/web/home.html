@@ -1,5 +1,20 @@
 {% extends 'web/base.html' %}
 {% load static %}
+{% block scroll %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="well">
+        <ul class="scroller">
+          {% for i in medee_angilal %}
+          <li><span>10/10/2007</span><a href="#">{{ i }} ...</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
 {% block content %}
 <div class="container">
   <div class="row">

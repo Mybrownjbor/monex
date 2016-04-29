@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 from django import forms
-from .models import User
+from .models import SystemUser
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate
+
 __all__ = ['RegisterForm', 'PasswordForm','LoginForm', 'ProfileUpdateForm']
 
 
@@ -40,22 +41,20 @@ class RegisterForm(forms.ModelForm):
 	repeat_password = forms.CharField(label = 'Нууц үг давтах:', widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Нууц үг давтах'}))
 
 	class Meta:
-		model = User
-		fields = ['first_name', 'last_name', 'register', 'email', 'phone', 'account', 'bank', 'password']
+		model = SystemUser
+		fields = ['username', 'first_name', 'last_name', 'register', 'email', 'phone', 'bank', 'account', 'password']
 		widgets = {
+			'username' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Нэвтрэх нэр'}),
 			'first_name' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Нэр'}),
 			'last_name' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Овог'}),
 			'register' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Регистер'}),
 			'email' : forms.EmailInput(attrs = {'class':'form-control', 'placeholder':'Э-мэйл'}),
 			'phone' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Утас'}),
-			'account' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Дансны дугаар'}),
 			'bank' : forms.Select(attrs = {'class':'form-control', 'placeholder':'Банк'}),
+			'account' : forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Дансны дугаар'}),
 			'password' : forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Нууц үг'}),
 		}
 		
-	def __init__(self, *args, **kwargs):
-		super(RegisterForm, self).__init__(*args, **kwargs)
-		self.fields['bank'].empty_label = 'Банк'
 
 	def clean(self):
 		cleaned_data = super(RegisterForm, self).clean()
@@ -76,7 +75,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
 class PasswordForm(forms.Form):
-	model = User
+	model = SystemUser
 	old_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Хуучин нууц үг'}))
 	new_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Шинэ нууц үг'}))
 	repeat_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Шинэ нууц үг давтах'}))

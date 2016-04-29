@@ -8,12 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--CSS-->
     <link rel="stylesheet" href="{% static 'assets/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/scroll.css' %}">
     <!--JS-->
     <script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/scroll.js' %}"></script>
     <script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js' %}"></script>
   </head>
 </html>
 <body>
 {% block header %}{% include 'web/header.html' %}{% endblock %}
+{% block scroll %}{% endblock %}
 {% block content %}{% endblock %}
 </body>
