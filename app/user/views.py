@@ -7,7 +7,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, PasswordForm, LoginForm, ProfileUpdateForm
+from .forms import RegisterForm, LoginForm, ProfileUpdateForm
 from .models import SystemUser
 
 __all__ = ['Login', 'RegisterView']

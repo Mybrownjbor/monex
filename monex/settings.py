@@ -41,7 +41,10 @@ INSTALLED_APPS = (
     #'app.manager',
     'app.web',
     #'app.competition',
+    'redactor',
 )
+
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,7 +67,6 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'app/user/Templates'),
             os.path.join(BASE_DIR, 'app/manager/Templates'),
             os.path.join(BASE_DIR, 'app/competition/Templates'),
-            os.path.join(BASE_DIR, 'app/web/Templates/web'),
             os.path.join(BASE_DIR, 'app/web/Templates'),
             ],
         'APP_DIRS': True,
@@ -126,6 +128,12 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+
+
+REDACTOR_OPTIONS = {'lang': 'en'}
+REDACTOR_UPLOAD = 'uploads/'
+
 
 
 EMAIL_HOST = 'smtp.gmail.com'

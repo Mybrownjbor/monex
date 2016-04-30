@@ -71,28 +71,3 @@ class ProfileUpdateForm(forms.ModelForm):
 
 	class Meta(RegisterForm.Meta):
 		exclude = ['password']
-
-
-
-class PasswordForm(forms.Form):
-	model = SystemUser
-	old_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Хуучин нууц үг'}))
-	new_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Шинэ нууц үг'}))
-	repeat_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':'Шинэ нууц үг давтах'}))
-
-	def __init__(self, *args, **kwargs):
-		self.id = kwargs.pop('id', None)
-		return super(PasswordForm, self).__init__(*args, **kwargs)
-
-	def clean(self, **kwargs):
-		cleaned_data = super(PasswordForm, self).clean(**kwargs)
-		user = self.model.objects.get(id = self.id)
-		if self.is_valid():
-			pass1 = cleaned_data['old_password']
-			pass2 = cleaned_data['new_password']
-			pass3 = cleaned_data['repeat_password']
-			if user.password != pass1:
-				raise forms.ValidationError(_(u'Нууц үг буруу байна'), code='invalid')
-			if pass2 != pass3:
-				raise forms.ValidationError(_(u'Нууц үг зөрүүтэй байна'), code='invalid')
-		return cleaned_data
