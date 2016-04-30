@@ -1,5 +1,6 @@
 *.pyc
-monex/app/competition/migrations
-monex/app/manager/migrations
-monex/app/user/migrations
-monex/app/web/migrations
+monex/app/competition/migrations/
+monex/app/manager/migrations/
+monex/app/user/migrations/
+monex/app/web/migrations/
+monex/media/
