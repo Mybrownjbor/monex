@@ -1304,6 +1304,7 @@ h3.title {
 }
 
 .dropdown a {
+	font-family: 'Open Sans', Sans-serif;
 	padding: 20px;
 	border-left: 1px solid white;
 	border-right: 1px solid white;

@@ -13,4 +13,5 @@ urlpatterns = [
 	url(r'^contact/$', Contact.as_view(), name = 'contact'),
 	url(r'^competition/$', WebCompetitionCalendar.as_view(), name = 'competition_calendar'),
 	url(r'^contact/$', Contact.as_view(), name = 'contact'),
+	url(r'^calendar/$', Calendar.as_view(), name = 'calendar'),
 ]

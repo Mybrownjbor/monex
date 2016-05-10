@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import BagtsForm
-__all__ = ['Home', 'About', 'News', 'Research', 'Lesson', 'Contact', 'NewsSelf', 'WebCompetitionCalendar']
+__all__ = ['Home', 'About', 'News', 'Research', 'Lesson', 'Contact', 'NewsSelf', 'WebCompetitionCalendar', 'Calendar']
 
 
 class Home(FormView):
@@ -114,3 +114,7 @@ class WebCompetitionCalendar(Home):
 class Contact(Home):
 	menu_num = 9
 	template_name = 'web/contact.html'
+
+class Calendar(Home):
+	menu_num = 7
+	template_name = 'web/calendar.html'

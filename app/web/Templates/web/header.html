@@ -66,7 +66,7 @@
             <li class="{% if menu_num == 6 %}active{% endif %}">
               <a href="{% if surgalt_first %}{% url 'lesson' surgalt_first.id %}{% endif %}">Сургалт</a>
             </li>
-            <li class="{% if menu_num == 7 %}active{% endif %}"><a href="#">Э/З календарь</a></li>
+            <li class="{% if menu_num == 7 %}active{% endif %}"><a href="{% url 'calendar' %}">Э/З календарь</a></li>
             <li class="{% if menu_num == 8 %}active{% endif %}"><a href="{% url 'room' %}">М-чат</a></li>
             <li class="{% if menu_num == 9 %}active{% endif %}"><a href="{% url 'contact' %}">Холбоо барих</a></li>
             <li class="{% if menu_num == 10 %}active{% endif %}"><a href="#contact">Чат</a></li>
