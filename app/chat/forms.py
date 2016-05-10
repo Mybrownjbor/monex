@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from django import forms
 from .models import *
 
@@ -9,6 +11,12 @@ class RoomForm(forms.ModelForm):
 	class Meta:
 		model = Room
 		fields = '__all__'
+		widgets = {
+			'name' : forms.TextInput(attrs = {'class':'form-control'})
+		}
+		labels = {
+			'name' : u'Форум'
+		}
 
 class MessageForm(forms.ModelForm):
 
@@ -17,5 +25,8 @@ class MessageForm(forms.ModelForm):
 		fields = ['content']
 		widgets = {
 			'content' : forms.Textarea(attrs = {'class': 'form-control'}),
+		}
+		labels = {
+			'content' : u'Мессеж'
 		}
 		

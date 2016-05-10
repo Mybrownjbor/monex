@@ -5,7 +5,7 @@
 <div class="col-md-8">
 	<div class="wall">
 		<h3 class="title">{{ messages.0.room.name }}</h3>
-		<a href="{% url 'room' %}">Буцах</a><br>
+		<a class="btn btn-default" href="{% url 'room' %}"><i class="fa fa-arrow-circle-left"></i> Буцах</a><br>
 		<section id="message-body">
 			{% for message in messages %}
 			<p style="{% if message.user == user %}font-weight: bold;{% endif %}">
@@ -15,9 +15,9 @@
 		</section>
 	</div>
 	<div class="wall">
-		<form id="message-form" method="post">{% csrf_token %}
+		<form class="form-horizontal" id="message-form" method="post">{% csrf_token %}
 			{{ form }}
-			<input type="submit" value="Илгээх" tabindex="-1">
+			<input type="submit" class="btn btn-success" value="Илгээх">
 		</form>
 	</div>
 </div>
