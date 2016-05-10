@@ -1,0 +1,32 @@
+{% extends 'web/base.html' %}
+{% block content %}
+{% comment %}
+<div class="col-md-3">
+	<div class="well">
+		<ul class="nav nav-pills nav-stacked">
+			{% for i in surgalt_angilal %}
+		  <li role="presentation" class="{% if surgalt_number == i.id %}active{% endif %}">
+		  	<a href="{% url 'lesson' i.id %}">{{ i }}</a>
+		  </li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endcomment %}
+<div class="col-md-8">
+
+	<div class="wall">
+		<h2 class="title">Сургалт</h2>
+		<div class="row">
+		{% for i in surgalt %}
+		<div class="col-md-6">
+		<div class="wall">
+		<h3 class="title">{{ i.video_name }}</h3>
+		<a class="youtube" href="{{ i.url }}"><img src="{{ i.image }}"></a>
+		</div>
+		</div>
+		{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

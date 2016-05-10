@@ -40,8 +40,11 @@ INSTALLED_APPS = (
     'app.user',
     #'app.manager',
     'app.web',
+    'app.chat',
     #'app.competition',
     'redactor',
+
+    
 )
 
 
@@ -68,6 +71,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'app/manager/Templates'),
             os.path.join(BASE_DIR, 'app/competition/Templates'),
             os.path.join(BASE_DIR, 'app/web/Templates'),
+            os.path.join(BASE_DIR, 'app/chat/Templates'),
             ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,6 +127,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 
 STATICFILES_DIRS = (
     ( 'assets', os.path.join(BASE_DIR, 'static') ),
+    os.path.join(BASE_DIR, 'web', 'static'),
     )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -142,3 +147,8 @@ EMAIL_HOST_PASSWORD = 'niyxjmgailkagzjr'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL = reverse_lazy('login')

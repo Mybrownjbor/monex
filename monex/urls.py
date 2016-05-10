@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views
+from redactor import urls
 
 urlpatterns = [
 
@@ -25,11 +26,15 @@ urlpatterns = [
 		{'template_name' : 'user/password/password_change_done.html' }, name="password_change_done"),
 
 	url(r'^', include('app.web.urls')),
+    
     #url(r'^manager/', include('app.manager.urls')),
+    
     url(r'^user/', include('app.user.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^chat/', include('app.chat.urls')),
 
-    url(r'^redactor/', include('redactor.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    
+    url(r'^redactor/', include(urls)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

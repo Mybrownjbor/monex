@@ -1,100 +1,57 @@
 {% extends 'web/base.html' %}
 {% load static %}
-{% block scroll %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="well">
-        <ul class="scroller">
-          {% for i in medee_angilal %}
-          <li><span>10/10/2007</span><a href="#">{{ i }} ...</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-9">
-      <div class="well">
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            {% for i in shuurhai_medee %}
-            <li data-target="#myCarousel" data-slide-to="{{ forloop.counter }}" class="{% if forloop.counter == 1 %}active{% endif %}"></li>
-            {% endfor %}
-          </ol>
-          <div class="carousel-inner" role="listbox">
-            {% for p in shuurhai_medee %}
-              {% if forloop.counter == 1 %}
-              <div class="item active">
-              {% else %}
-              <div class="item">
-              {% endif %}
-                <img src="{% static 'assets/img/asd.png' %}" alt="Image" height="200" width="300">
-                <div class="carousel-caption">
-                  <h3>{{ p }}</h3>
-                  <p>{{ p }}</p>
-                </div>
-              </div>
-            {% endfor %}
+<div class="col-md-8">
+  <div class="wall">
+    <h2 class="title">Онцлох мэдээ</h2>
+    <section class="main-slider carousel slide" data-ride="carousel">
+      <div class="carousel-inner" role="listbox">
+        {% for c in corausel %}
+        <div class="item {% if forloop.counter == 1 %}active{% endif %}">
+          <img src="{{ c.img_url }}">
+          <div class="carousel-caption">
+            <a href="#"><h3 class="carousel-title">{{ c.title }}</h3></a>
           </div>
         </div>
+        {% endfor %}
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="well">
-            <h2>Мэдээ мэдээлэл</h2>
-            <p>{{ s.body|safe }}</p>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="well">
-            <h2>Судалгаа</h2>
-          </div>
-        </div>
-      </div>
-      <div class="well">
-        <h2>Видео хичээл</h2>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="well">
-              <h2>Видео 1</h2>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="well">
-              <h2>Видео 2</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="well">
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-          <li class="active"><a href="#red" data-toggle="tab">Валютын ханш</a></li>
-          <li><a href="#orange" data-toggle="tab">Хувьцаа</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="red">
-            <h2>Валютын ханш</h2>
-          </div>
-          <div class="tab-pane" id="orange">
-            <h2>Хувьцаа</h2>
-          </div>
-        </div>
-      </div>
-      <div class="well">
-        <h2>Мэдээллийн шинжилгээ</h2>
-        [gallery ids="37,36,4" type="rectangular"]
-      </div>
-      <div class="well">
-        <h2>Суурь шинжилгээ</h2>
-      </div>
-    </div>
+    </section>
   </div>
+  <section class="wall">
+  	<h2 class="title">Мэдээ</h2>
+  	{% for m in medee %}
+    <div class="wall-wall">
+			<span class="service-image"><img src="{{ m.img_url }}" alt="{{ m.img_url }}"></span>
+    	<span class="accordion-title"><a href="{% url 'news_self' m.id %}">{{ m.title|truncatechars:60 }}</a></span>
+    	<p>{{ m.remove_html|truncatechars:200|safe }}</p>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="wall">  
+    <h2 class="title">Сургалт</h2>
+    <div class="row">
+      {% for s in surgalt %}
+      <div class="col-md-6">
+        <article class="lesson">
+          <a class="youtube" href="{{ s.url }}">
+            <img src="{{ s.image }}" alt="post Image">
+          </a>
+          <div class="post-meta">
+          	<div class="entry-meta">
+              <span class="entry-date">
+                <time datetime="2015-01-15">15 Jan 2015</time>
+              </span>
+              <span class="author-name">
+                <a href="#">{{ s.author_name }}</a>
+              </span>
+            </div><!-- /.entry-meta -->
+          </div><!-- /.post-meta -->
+        </article>
+      </div>
+      {% endfor %}
+    </div>
+	</section>
+
 </div>
 {% endblock %}

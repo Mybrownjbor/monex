@@ -1,0 +1,70 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+<script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
+<div class="col-md-8">
+	<div class="wall">
+		<h3 class="title">{{ messages.0.room.name }}</h3>
+		<a href="{% url 'room' %}">Буцах</a><br>
+		<section id="message-body">
+			{% for message in messages %}
+			<p style="{% if message.user == user %}font-weight: bold;{% endif %}">
+				{{ message.user }} : {{ message }}
+			</p><br>
+			{% endfor %}
+		</section>
+	</div>
+	<div class="wall">
+		<form id="message-form" method="post">{% csrf_token %}
+			{{ form }}
+			<input type="submit" value="Илгээх" tabindex="-1">
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	var aaa = function(){
+	  $.ajax({
+	    type : 'GET',
+	    url : '/chat/message/{{ room_id }}',
+	    success: function (xhr, ajaxOptions, thrownError) {
+	      //alert(xhr.length);
+	      var x = ''
+	      for(i=0;i<xhr.length;i++){
+	        x += '<p style="font-weight:bold;">'+ xhr[i].user+ ' : ' + xhr[i].msg +'</p><br/>';
+	        //$('#message-body').html('<p style="font-weight:bold;">'+ xhr[i].user+ ' : ' + xhr[i].msg +'</p><br/>');
+	      }
+	      $('#message-body').html(x);
+
+	    },
+	    error: function (xhr, ajaxOptions, thrownError) {
+	    }
+	  });
+	};
+	var interval = 1000; // 1 secs
+	setInterval(aaa, interval);
+</script>
+<script>
+  $(document).ready(function() {
+  	$('#message-body').niceScroll({
+  			height: 100,
+        cursorcolor: "#3498db",
+        zindex: '99999',
+        cursorminheight: 60,
+        scrollspeed: 80,
+        cursorwidth: 7,
+        autohidemode: true,
+        background: "#aaa",
+        cursorborder: 'none',
+        cursoropacitymax: .7,
+        cursorborderradius: 0,
+        horizrailenabled: false
+      });
+    });
+</script>
+{% endblock %}
+{% block rightcontent %}
+	<div class="col-md-8">
+		<div class="wall"></div>
+	</div>
+{% endblock %}
+{% block footer %}{% endblock %}

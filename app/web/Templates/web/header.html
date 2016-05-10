@@ -1,48 +1,78 @@
-<header class="main-header">
-  <nav class="navbar navbar-static-top" role="navigation">
-    <div class="navbar-header">
-      <a href="{% url 'home_page' %}" class="navbar-brand"><b>MONEX</b></a>
-    </div>
-    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="#">Бидний тухай</a></li>
-        <li><a href="#">Тэмцээн</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Мэдээлэл <span class="caret"></span></a>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            {% for i in medee_angilal %}
-            <li><a href="">{{ i.angilal }}</a></li>
-            {% endfor %}
+<section id="top-contact" class="top-contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 pull-left">
+        <ul>
+          <li>
+            <a href="#" class="top-icon fa fa-facebook"></a>
+          </li>
+          <li>
+            <a href="#" class="top-icon fa fa-twitter"></a>
+          </li>
+          <li>
+            <a href="#" class="top-icon fa fa-youtube-play"></a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-4 pull-right">
+        <div class="top-social">
+          <ul>
+          {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}" class="top-icon-word fa fa-user"> Нэвтрэх</a></li>
+          {% else %}
+          <div class="dropdown">
+            <a href="javascript:;" data-toggle="dropdown">{{ user }}
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Минии мэдээлэл</a></li>
+              <li><a href="#">Нууц үг солих</a></li>
+              <li><a href="{% url 'logout' %}">Системээс гарах</a></li>
+            </ul>
+          </div>
+          {% endif %}
           </ul>
-        </li>
-        {% if user.is_authenticated %}
-        <li><a href="#">Судалгаа</a></li>
-        {% endif %}
-        <li><a href="#">Сургалт</a></li>
-        <li><a href="#">Эдийн засгийн календарь</a></li>
-        <li><a href="#">М-чат</a></li>
-        <li><a href="#">Багц</a></li>
-        <li><a href="#">Холбоо барих</a></li>
-        <li><a href="#">Шууд чатлах</a></li>
-      </ul>
-    </div>
-    <div class="navbar-custom-menu">
-      <ul class="nav navbar-nav">
-        {% if user.is_authenticated %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="hidden-xs">{{ user }}</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="">Миний мэдээлэл</a></li>
-            <li><a href="{% url 'password_change' %}">Нууц үг солих</a></li>
-            <li><a href="{% url 'logout' %}">Системээс гарах</a></li>
-          </ul>
-        </li>
-        {% else %}
-        <li><a href="{% url 'login' %}">Нэвтрэх</a></li>
-        {% endif%}
-      </ul>
-    </div>
-  </nav>
-</header>
+        </div>
+      </div>
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+</section><!-- /#top-contact -->
+
+<section id="site-banner" class="site-banner text-center">
+  <div class="container">
+    <div class="site-logo">
+      {% comment %}<a href="./"><img src="/static/images/logo.png" alt="Site Logo"></a>{% endcomment %}
+      <h2>MONEX</h2>
+    </div><!-- /.site-logo -->
+  </div><!-- /.container -->
+</section><!-- /#site-banner -->
+
+<header id="main-menu" class="main-menu">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <nav id="menu" class="menu collapse navbar-collapse">
+          <ul id="headernavigation" class="menu-list nav navbar-nav">
+            <li class="{% if menu_num == 1 %}active{% endif %}"><a href="{% url 'home' %}">Нүүр</a></li>
+            <li class="{% if menu_num == 2 %}active{% endif %}"><a href="{% url 'about' %}">Бидний тухай</a></li>
+            <li class="{% if menu_num == 3 %}active{% endif %}"><a href="{% url 'competition_calendar' %}">Тэмцээн</a></li>
+            <li class="{% if menu_num == 4 %}active{% endif %}">
+              <a href="{% if medee_first %}{% url 'news' medee_first.id %}{% endif %}">Мэдээлэл</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="{% if menu_num == 5 %}active{% endif %}">
+              <a href="{% if sudalgaa_first %}{% url 'research' sudalgaa_first.id %}{% endif %}">Судалгаа</a>
+            </li>
+            {% endif %}
+            <li class="{% if menu_num == 6 %}active{% endif %}">
+              <a href="{% if surgalt_first %}{% url 'lesson' surgalt_first.id %}{% endif %}">Сургалт</a>
+            </li>
+            <li class="{% if menu_num == 7 %}active{% endif %}"><a href="#">Э/З календарь</a></li>
+            <li class="{% if menu_num == 8 %}active{% endif %}"><a href="{% url 'room' %}">М-чат</a></li>
+            <li class="{% if menu_num == 9 %}active{% endif %}"><a href="{% url 'contact' %}">Холбоо барих</a></li>
+            <li class="{% if menu_num == 10 %}active{% endif %}"><a href="#contact">Чат</a></li>
+          </ul><!-- /.menu-list -->
+        </nav><!-- /.menu-list -->
+      </div>
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+</header><!-- /#main-menu -->
