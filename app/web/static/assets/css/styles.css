@@ -1326,3 +1326,7 @@ h3.title {
 	border-radius: 0;
 	border: 1px;
 }
+
+.daterangepicker {
+	margin-left: 0px;
+}

@@ -17,6 +17,9 @@ $(function () {
   $(".youtube").YouTubeModal({autoplay:0, width:640, height:480});
 });
 
+$(function(){
+  $('button[date="daterange"]').daterangepicker();
+});
 
 var formAjaxSubmit = function(form, body) {
   $(form).submit(function (e) {

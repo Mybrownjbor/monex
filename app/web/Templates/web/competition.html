@@ -8,7 +8,7 @@
       <button class="btn-sm btn-success">Бүртгэл эхэлсэн</button>
       <button class="btn-sm btn-primary">Оролцож байгаа тэмцээн</button>
       <button class="btn-sm btn-info">Явагдаж байгаа тэмцээн</button>
-      <button class="btn-sm btn-warning"><i class="fa fa-calendar"></i></button>
+      <button class="btn-sm btn-danger" date="daterange"><i class="fa fa-calendar"></i></button>
     </div>
 		<div id="calendar" class="calendar" style="height: 1000px;"></div>
 	</div>
@@ -16,10 +16,17 @@
 {% endblock %}
 {% block js %}
 <script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
+<script src="{% static 'assets/assets/bootstrap-daterange/js/moment.min.js' %}"></script>
+<script src="{% static 'assets/assets/bootstrap-daterange/js/daterangepicker.js' %}"></script>
 <script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'assets/assets/bootstrap-year-calendar-master/js/bootstrap-year-calendar.js' %}"></script>
 <script src="/static/assets/js/plugins.js"></script>  
 <script src="/static/assets/js/functions.js"></script>
+<script type="text/javascript">
+  $(function(){
+    $('button[date="daterange"]').daterangepicker();
+  });
+</script>
 <script type="text/javascript">
 $(function() {
     var currentYear = new Date().getFullYear();
