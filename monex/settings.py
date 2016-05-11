@@ -127,7 +127,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 
 STATICFILES_DIRS = (
     ( 'assets', os.path.join(BASE_DIR, 'static') ),
-    #os.path.join(BASE_DIR, 'web', 'static'),
     )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -17,7 +17,7 @@ forms.Field.default_error_messages = {
 class LoginForm(forms.Form):
 	username = forms.CharField(label = u"Нэвтрэх нэр:", widget = forms.TextInput(attrs = {'class': 'form-control', 'placeholder': 'Э-мэйл'}))
 	password = forms.CharField(label = u"Нууц үг:", widget = forms.PasswordInput(attrs = {'class': 'form-control', 'placeholder': 'Нууц үг'}))
-	remember_me = forms.BooleanField(required = False, initial = True)
+	remember_me = forms.BooleanField(required = False, initial = True, label = 'Намайг сана')
 
 	def clean_remember_me(self):
 		remember_me = self.cleaned_data['remember_me']
