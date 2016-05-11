@@ -20,11 +20,8 @@ class Home(FormView):
 		context = super(Home, self).get_context_data(*args, **kwargs)
 		context['corausel'] = Medee.objects.all().order_by('created_at')[:5]
 		context['medee_angilal'] = MedeeAngilal.objects.all()
-		context['medee_first'] = MedeeAngilal.objects.first()
 		context['sudalgaa_angilal'] = SudalgaaAngilal.objects.all()
-		context['sudalgaa_first'] = SudalgaaAngilal.objects.first()
 		context['surgalt_angilal'] = SurgaltAngilal.objects.all()
-		context['surgalt_first'] = SurgaltAngilal.objects.first()
 		context['medee'] = Medee.objects.all().order_by('-id')[:5]
 		context['medee_most'] = Medee.objects.all().order_by('-view')[:5]
 		context['sudalgaa'] = Sudalgaa.objects.all().order_by('-id')[:5]
@@ -88,15 +85,10 @@ class Research(Home):
 class Lesson(Home):
 	template_name = 'web/lesson.html'
 	menu_num = 6
-
-	def dispatch(self, request, *args, **kwargs):
-		self.surgalt_number = self.kwargs.pop('id', None)
-		return super(Lesson, self).dispatch(request, *args, **kwargs)
-
+	
 	def get_context_data(self, *args, **kwargs):
 		context = super(Lesson, self).get_context_data(*args, **kwargs)
-		context['surgalt'] = Surgalt.objects.filter(angilal__id = self.surgalt_number)
-		context['surgalt_number'] = int(self.surgalt_number)
+		context['surgalt'] = Surgalt.objects.all()
 		return context
 
 class Contact(Home):

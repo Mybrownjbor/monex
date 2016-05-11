@@ -1004,7 +1004,7 @@
 		}
 	};
 	
-	var colors = $.fn.calendar.colors = ['#2C8FC9', '#9CB703', '#F5BB00', '#FF4A32', '#B56CE2', '#45A597'];
+	var colors = $.fn.calendar.colors = ['#5cb85c', '#337ab7', '#5bc0de'];
 	
 	$(function(){
 		$('[data-provide="calendar"]').each(function() {

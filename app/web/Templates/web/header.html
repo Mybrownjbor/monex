@@ -56,7 +56,7 @@
             <li class="{% if menu_num == 2 %}active{% endif %}"><a href="{% url 'about' %}">Бидний тухай</a></li>
             <li class="{% if menu_num == 3 %}active{% endif %}"><a href="{% url 'competition_calendar' %}">Тэмцээн</a></li>
             <li class="{% if menu_num == 4 %}active{% endif %}">
-              <a href="{% if medee_first %}{% url 'news' medee_first.id %}{% endif %}">Мэдээлэл</a>
+              <a href="{% url 'news' %}">Мэдээлэл</a>
             </li>
             {% if user.is_authenticated %}
             <li class="{% if menu_num == 5 %}active{% endif %}">
@@ -64,7 +64,7 @@
             </li>
             {% endif %}
             <li class="{% if menu_num == 6 %}active{% endif %}">
-              <a href="{% if surgalt_first %}{% url 'lesson' surgalt_first.id %}{% endif %}">Сургалт</a>
+              <a href="{% url 'lesson' %}">Сургалт</a>
             </li>
             <li class="{% if menu_num == 7 %}active{% endif %}"><a href="{% url 'calendar' %}">Э/З календарь</a></li>
             <li class="{% if menu_num == 8 %}active{% endif %}"><a href="{% url 'room' %}">М-чат</a></li>
