@@ -17,8 +17,8 @@ class SystemUser(User):
 
 	register = models.CharField(max_length = 10, verbose_name = u'Регистер:', unique = True)
 	phone = models.IntegerField(verbose_name = u'Утас:')
-	bank = models.ForeignKey(Bank, verbose_name = 'Банк:')
-	account = models.IntegerField(verbose_name = 'Дансний дугаар:')
+	bank = models.ForeignKey(Bank, verbose_name = 'Банк:', null = True)
+	account = models.IntegerField(verbose_name = 'Дансний дугаар:', null = True)
 	
 	def __unicode__(self):
 		return unicode(self.first_name)

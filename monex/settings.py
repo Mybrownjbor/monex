@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.user',
-    #'app.manager',
+    'app.manager',
     'app.web',
     'app.chat',
     #'app.competition',
