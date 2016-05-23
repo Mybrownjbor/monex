@@ -10,6 +10,9 @@ class CompetitionRank(models.Model):
 	fee = models.IntegerField(verbose_name = u'Суурь хураамж')
 	shagnal = models.TextField(verbose_name = u'Шагналын сан')
 
+	class Meta:
+		ordering = ['-id']
+
 	def __unicode__(self):
 		return unicode(self.name)
 

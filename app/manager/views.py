@@ -1,87 +1,74 @@
 # -*- coding:utf-8 -*-
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import  authenticate, login, logout
+from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (FormView, TemplateView, ListView, CreateView, UpdateView)
 from django.http import HttpResponseRedirect
-from .forms import (ManagerLoginForm, ManagerPasswordForm, CompetitionRankForm, CompetitionForm)
+from .forms import (CompetitionRankForm, CompetitionForm)
 from app.competition.models import (CompetitionRank, Competition)
+from .models import Manager
+from app.user.forms import LoginForm
+from django.http import HttpResponse
 
-__all__ = ['ManagerLoginRequired', 'ManagerHomeView', 'ManagerLoginView', 'ManagerLoggenIn', 'RankCreateView',
-'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView', 'CompetitionListView']
-
-class ManagerLoggenIn(object):
-	
-	def dispatch(self, request):
-		if 'manager' in request.session:
-			return HttpResponseRedirect('/manager/home/')
-		else:
-			return super(ManagerLoggenIn, self).dispatch(request)
+__all__ = ['RankCreateExample','ManagerLoginView','ManagerHomeView', 'RankCreateView', 'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView', 'CompetitionListView']
 
 
-class ManagerLoginView(ManagerLoggenIn, FormView):
+class RankCreateExample(CreateView):
+	form_class = CompetitionRankForm
+	template_name = 'manager/rank_example.html'
 
-	template_name = 'manager/login.html'
-	form_class = ManagerLoginForm
+	def form_valid(self, form):
+		model = form.save(commit=False)
+		form.save()
+		#if "_popup" in self.request.POST:
+		return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' % (model.id, model.name))
+
+class ManagerLoginView(FormView):
+	form_class = LoginForm
+	template_name = 'user/login.html'
 	success_url = reverse_lazy('manager_home')
 
 	def form_valid(self, form):
-		form.login(self.request)
+		user = authenticate(username = form.cleaned_data['username'], password = form.cleaned_data['password'])
+		if user and Manager.objects.filter(username = user.username):
+			login(self.request, user)
 		return super(ManagerLoginView, self).form_valid(form)
 
 	@staticmethod
 	def logout(request):
-		if 'manager' in request.session:
-			del request.session['manager']
-		return HttpResponseRedirect('/manager/login/')
+		logout(request)
+		return HttpResponseRedirect(reverse_lazy('manager_home'))
 
 
 class ManagerLoginRequired(object):
 
-	def get_context_data(self, *args, **kwargs):
-		context = super(ManagerLoginRequired, self).get_context_data(*args, **kwargs)
-		context['manager'] = self.manager
-		return context
-
-
+	@method_decorator(login_required)
+	def dispatch(self, request, *args, **kwargs):
+		user = request.user
+		print user.username
+		if Manager.objects.filter(username = user.username):	
+			return super(ManagerLoginRequired, self).dispatch(request, *args, **kwargs)
+		else:
+			return HttpResponseRedirect(reverse_lazy('manager_login'))
 class ManagerHomeView(ManagerLoginRequired, TemplateView):
 
 	template_name = 'manager/home.html'
 
-
-class ManagerProfileView(ManagerLoginRequired, TemplateView):
-
-	template_name = 'manager/profile.html'
-
-
-class ManagerPasswordChangeView(ManagerLoginRequired, FormView):
-
-	template_name = 'user/password_change.html'
-	form_class = ManagerPasswordForm
-	success_url = reverse_lazy('manager_home')
-
-	def get_form_kwargs(self):
-		kwargs = super(ManagerPasswordChangeView, self).get_form_kwargs()
-		kwargs.update({'id' : self.manager.id})
-		return kwargs
-
-	def form_valid(self, form):
-		form.password_change()
-		return super(ManagerPasswordChangeView, self).form_valid(form)
-
 # Temtseenii angilal crud
-class RankListView(ManagerLoginRequired, ListView):
+class RankListView(ListView):
 	model = CompetitionRank
 	template_name = 'manager/rank/rank_list.html'
 
 
-class RankCreateView(ManagerLoginRequired, CreateView):
+class RankCreateView(CreateView):
 	model = CompetitionRank
 	form_class = CompetitionRankForm
 	template_name = 'manager/rank/rank_form.html'
 	success_url = reverse_lazy('manager_rank')
 
 
-class RankUpdateView(ManagerLoginRequired, UpdateView):
+class RankUpdateView(UpdateView):
 	model = CompetitionRank
 	form_class = CompetitionRankForm
 	template_name = 'manager/rank/rank_form.html'
@@ -94,14 +81,14 @@ class CompetitionListView(RankListView):
 	template_name = 'manager/competition/competition_list.html'
 
 
-class CompetitionCreateView(ManagerLoginRequired, CreateView):
+class CompetitionCreateView(CreateView):
 	model = Competition
 	form_class = CompetitionForm
 	template_name = 'manager/competition/competition_form.html'
 	success_url = reverse_lazy('manager_competition')
 
 
-class CompetitionUpdateView(ManagerLoginRequired, UpdateView):
+class CompetitionUpdateView(UpdateView):
 	model = Competition
 	form_class = CompetitionForm
 	template_name = 'manager/competition/competition_form.html'

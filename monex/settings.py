@@ -41,9 +41,9 @@ INSTALLED_APPS = (
     'app.manager',
     'app.web',
     'app.chat',
-    #'app.competition',
+    'app.competition',
     'redactor',
-
+    'bootstrap3_datetime',
     
 )
 

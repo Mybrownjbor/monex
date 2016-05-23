@@ -1,12 +1,10 @@
 from django.conf.urls import url
-from .views import (ManagerLoginView, ManagerHomeView, ManagerProfileView, 
-	ManagerPasswordChangeView, CompetitionCreateView, RankCreateView, RankListView, CompetitionListView,
-	RankUpdateView, CompetitionUpdateView)
+from .views import *
 
 urlpatterns = [
 	url(r'^home/$', ManagerHomeView.as_view(), name = 'manager_home'),
-	url(r'^profile/$', ManagerProfileView.as_view(), name = 'manager_profile'),
-	url(r'^password/(?P<pk>[0-9]+)/$', ManagerPasswordChangeView.as_view(), name = 'manager_password'),
+	#url(r'^profile/$', ManagerProfileView.as_view(), name = 'manager_profile'),
+	#url(r'^password/(?P<pk>[0-9]+)/$', ManagerPasswordChangeView.as_view(), name = 'manager_password'),
 
 	url(r'^rank/$', RankListView.as_view(), name = 'manager_rank'),
 	url(r'^competition/$', CompetitionListView.as_view(), name = 'manager_competition'),
@@ -19,4 +17,5 @@ urlpatterns = [
 	
 	url(r'^login/$', ManagerLoginView.as_view(), name = 'manager_login'),
 	url(r'^logout/$', ManagerLoginView.logout, name = 'manager_logout'),
+	url(r'^rank_create/$', RankCreateExample.as_view(), name = 'manager_rank_create_example')
 ]

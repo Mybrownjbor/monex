@@ -33,11 +33,15 @@ urlpatterns = [
     #url(r'^manager/', include('app.manager.urls')),
     
     url(r'^user/', include('app.user.urls')),
+
+    url(r'^manager/', include('app.manager.urls')),
+
     url(r'^chat/', include('app.chat.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
     
     url(r'^redactor/', include(urls)),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

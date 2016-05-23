@@ -27,7 +27,6 @@ class Login(FormView):
 
 	def form_valid(self, form):
 		user = authenticate(username = form.cleaned_data['username'], password = form.cleaned_data['password'])
-		print user
 		if user:
 			login(self.request, user)
 		return super(Login, self).form_valid(form)
@@ -35,7 +34,7 @@ class Login(FormView):
 	@staticmethod
 	def logout(request):
 		logout(request)
-		return HttpResponseRedirect('/')
+		return HttpResponseRedirect(reverse_lazy('home'))
 
 
 
