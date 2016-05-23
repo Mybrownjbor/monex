@@ -1,6 +1,5 @@
 {% load static %}
 <head>
-  <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -8,5 +7,6 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <div class="alert alert-success">
-  <strong>Бүртгэл амжилттай хийгдлээ!</strong> {{ email }} хаягруу орж бүртгэлээ баталгаажуулна уу! 
+  <strong>Бүртгэл амжилттай хийгдлээ!</strong> {{ email }} хаягруу орж бүртгэлээ баталгаажуулна уу!
+  <a href="{% url 'home' %}" class="btn btn-primary">Буцах</a> 
 </div>
