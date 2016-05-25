@@ -75,7 +75,7 @@
         var value = $this.val();
         if (value) {
             siblings.each(function() {
-                var elm = django.jQuery(this);
+                var elm = jQuery(this);
                 elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
             });
         } else {

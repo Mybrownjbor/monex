@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views
 from redactor import urls
 from app.user.forms import UserPasswordResetForm, UserPasswordChangeForm
+import debug_toolbar
 urlpatterns = [
 
 	url(r'^password_reset/$', views.password_reset, {'template_name' : 'user/password/password_reset.html', 'password_reset_form' : UserPasswordResetForm},
@@ -47,7 +48,9 @@ urlpatterns = [
 
 
 if settings.DEBUG is False:
-	urlpatterns += patterns('',
+	
+    urlpatterns += patterns('',
 		url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 		url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        url(r'^__debug__/', include(debug_toolbar.urls)),
 	)

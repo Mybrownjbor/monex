@@ -10,22 +10,27 @@ from django.forms import widgets
 from django.conf import settings
 from django.contrib.admin.sites import AdminSite
 
+__all__ = ['CompetitionForm', 'CompetitionRankForm']
+
+
+my_admin_site = AdminSite(name='manager_create')
+
 class RelAdd(RelatedFieldWidgetWrapper):
 
 	#template = 'manager/related.html'
 
-	def __init__(self, url, *args, **kwargs):
+	def __init__(self, *args, **kwargs):
 		super(RelAdd, self).__init__(*args, **kwargs)
-		self._url = url
 		self.attrs['class'] = 'form-control'
 		self.attrs['style'] = 'width:90%;' #= {'class' : 'form-control'}
 
 	
-	def get_related_url(self, *args, **kwargs):
-		return reverse(self._url)
+	#def get_related_url(self, info, action, *args):
+	#	return super(RelAdd, self).get_related_url(info, action, *args)
+		#return reverse("manager_%s_%s_%s" % (info + (action,)), args = args)
 
-my_admin_site = AdminSite(name='manager_rank_create')
-__all__ = ['CompetitionForm', 'CompetitionRankForm']
+
+
 
 
 class CompetitionRankForm(forms.ModelForm):
@@ -46,10 +51,10 @@ class CompetitionForm(forms.ModelForm):
 		exclude = ['status', 'competition_status']
 		widgets = {
 			'rank' : RelAdd(
-				'manager_rank_create_example',
 				Competition._meta.get_field('rank').formfield().widget,
             	Competition._meta.get_field('rank').rel,
             	my_admin_site,
+            	can_change_related=True,
             	can_add_related=True,
             	), 
 			'start' : DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickSeconds": False}),

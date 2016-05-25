@@ -7,16 +7,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MONEX</title>
-  <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="{% static 'assets/assets/bootstrap/css/bootstrap.css' %}">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
-  <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'assets/admin/dist/css/AdminLTE.css' %}">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static 'assets/admin/dist/css/skins/_all-skins.min.css' %}">
 
 
@@ -24,9 +18,7 @@
   <script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js ' %}"></script>
   <script src="{% static 'assets/admin/dist/js/app.min.js' %}"></script>
   <script src="{% static 'assets/admin/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
-  <script src="{% static 'assets/js/RelatedObjectLookups.js' %}"></script>
   <script src="{% static 'assets/js/core.js' %}"></script>
-
 
 
   <link href="/static/redactor/css/redactor.css" type="text/css" media="all" rel="stylesheet" />
@@ -34,9 +26,16 @@
   <script type="text/javascript" src="/static/redactor/redactor.js"></script>
   <script type="text/javascript" src="/static/redactor/langs/en.js"></script>
   
+  <script type="text/javascript" src="/admin/jsi18n/"></script>
+  <link href="/static/redactor/css/redactor.css" type="text/css" media="all" rel="stylesheet" />
+  <script type="text/javascript" src="/static/admin/js/core.js"></script>
+  <script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+  <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+  <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+
   {% endblock %}
 </head>
-<body class="hold-transition skin-blue-light sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
   {% block header %}
   <header class="main-header">
@@ -129,9 +128,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{% url 'manager_news' %}"><i class="fa fa-circle-o"></i> Мэдээлэл</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Сургалт</a></li>
+            <li><a href="{% url 'manager_lesson' %}"><i class="fa fa-circle-o"></i> Сургалт</a></li>
             <li><a href=""><i class="fa fa-circle-o"></i> Судалгаа</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Бидний тухай</a></li>
+            <li><a href="{% url 'manager_about' %}"><i class="fa fa-circle-o"></i> Бидний тухай</a></li>
           </ul>
         </li>
       </ul>
@@ -199,7 +198,7 @@
     <div class="pull-right hidden-xs">
       <b></b>
     </div>
-    <strong>Copyright &copy; 2014-2015.</strong>
+    <strong></strong>
   </footer>
   {% endblock %}
   <div class="control-sidebar-bg"></div>

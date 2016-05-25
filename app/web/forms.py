@@ -6,7 +6,7 @@ from .models import *
 from app.manager.forms import RelAdd
 from django.contrib.admin.sites import AdminSite
 my_admin_site = AdminSite(name='manager_rank_create')
-__all__ = ['BagtsForm', 'NewsForm']
+__all__ = ['BagtsForm', 'NewsForm', 'AboutForm', 'LessonForm']
 
 class BagtsForm(forms.Form):
 	name = forms.CharField(label = u'Хувьцааны нэр', widget = forms.TextInput(attrs = {'class':'form-control'}))
@@ -16,19 +16,45 @@ class BagtsForm(forms.Form):
 
 class NewsForm(forms.ModelForm):
 	
-	body = forms.CharField(widget = RedactorEditor())
-
 	class Meta:
 		model = Medee
 		fields = ['angilal', 'title', 'body']
 
 		widgets = {
-			'angilal' : RelAdd('manager_rank_create',
+			'angilal' : RelAdd(
 				Medee._meta.get_field('angilal').formfield().widget,
             	Medee._meta.get_field('angilal').rel,
             	my_admin_site,
             	can_add_related=True,
+            	can_change_related = True,
             	),
-			'body' : RedactorEditor(),
 			'title' : forms.TextInput(attrs = {'class':'form-control'})
 		}
+
+class AboutForm(forms.ModelForm):
+
+	class Meta:
+		model = BidniiTuhai
+		fields = "__all__"
+		widgets = {
+			'video_url' : forms.TextInput(attrs = {'class':'form-control'})
+		}
+
+class LessonForm(forms. ModelForm):
+
+	class Meta:
+		model = Surgalt
+		fields = "__all__"
+		widgets = {
+			'angilal' : RelAdd(
+				Surgalt._meta.get_field('angilal').formfield().widget,
+            	Surgalt._meta.get_field('angilal').rel,
+            	my_admin_site,
+            	can_add_related=True,
+            	can_change_related = True,
+            	),
+			'video_name' : forms.TextInput(attrs = {'class':'form-control'}),
+			'url' : forms.TextInput(attrs = {'class':'form-control'}),
+			'author_name' : forms.TextInput(attrs = {'class':'form-control'}),
+			'author_email' : forms.EmailInput(attrs = {'class':'form-control'}),
+			}
