@@ -12,14 +12,17 @@ from django.contrib.admin.sites import AdminSite
 
 class RelAdd(RelatedFieldWidgetWrapper):
 
-	def __init__(self, *args, **kwargs):
+	#template = 'manager/related.html'
+
+	def __init__(self, url, *args, **kwargs):
 		super(RelAdd, self).__init__(*args, **kwargs)
+		self._url = url
 		self.attrs['class'] = 'form-control'
 		self.attrs['style'] = 'width:90%;' #= {'class' : 'form-control'}
 
-	template = 'manager/related.html'
+	
 	def get_related_url(self, *args, **kwargs):
-		return reverse('manager_rank_create_example')
+		return reverse(self._url)
 
 my_admin_site = AdminSite(name='manager_rank_create')
 __all__ = ['CompetitionForm', 'CompetitionRankForm']
@@ -42,12 +45,13 @@ class CompetitionForm(forms.ModelForm):
 		model = Competition
 		exclude = ['status', 'competition_status']
 		widgets = {
-			'rank' : RelAdd(#forms.ModelChoiceField(),
-			Competition._meta.get_field('rank').formfield().widget,
-            Competition._meta.get_field('rank').rel,
-            my_admin_site,
-            can_add_related=True,
-            ), 
+			'rank' : RelAdd(
+				'manager_rank_create_example',
+				Competition._meta.get_field('rank').formfield().widget,
+            	Competition._meta.get_field('rank').rel,
+            	my_admin_site,
+            	can_add_related=True,
+            	), 
 			'start' : DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickSeconds": False}),
 			'end' : DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickSeconds": False}),
 		}

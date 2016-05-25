@@ -17,5 +17,8 @@ urlpatterns = [
 	
 	url(r'^login/$', ManagerLoginView.as_view(), name = 'manager_login'),
 	url(r'^logout/$', ManagerLoginView.logout, name = 'manager_logout'),
-	url(r'^rank_create/$', RankCreateExample.as_view(), name = 'manager_rank_create_example')
+	url(r'^rank_create/$', RankCreateExample.as_view(), name = 'manager_rank_create_example'),
+	url(r'^news/$', ManagerNewsView.as_view(), name = 'manager_news'),
+	url(r'^news/create/$', ManagerNewsCreateView.as_view(), name = 'manager_news_create'),
+	url(r'^news/update/(?P<pk>[0-9]+)$', ManagerNewsUpdateView.as_view(), name = 'manager_news_update'),
 ]

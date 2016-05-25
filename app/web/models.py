@@ -21,6 +21,9 @@ class Medee(models.Model):
 	created_at = models.DateTimeField(auto_now_add = True)
 	view = models.SmallIntegerField(default = 0)
 
+	class Meta:
+		ordering = ['-id']
+
 	def __unicode__(self):
 		return unicode(self.angilal)
 

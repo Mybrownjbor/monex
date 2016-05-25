@@ -1,4 +1,5 @@
 {% extends 'manager/base.html' %}
+{% load i18n %}
 {% block content %}
 <section class="content">
   <div class="row">
@@ -7,8 +8,8 @@
       <div class="box">
         <div class="box-header">
           <h3 class="box-title">
-            Тэмцээний ангилал
-            <a href="{% url 'manager_rank_create' %}"><i class="fa fa-plus-circle"></i></a>
+            {% trans 'Мэдээ' %}
+            <a href="{% url 'manager_news_create' %}"><i class="fa fa-plus-circle"></i></a>
           </h3>
         </div>
         <div class="box-body">
@@ -17,8 +18,8 @@
               <tr>
                 <th>№</th>
                 <th>Ангилал</th>
-                <th>Хураамж</th>
-                <th>Шагналын сан</th>
+                <th>Гарчиг</th>
+                <th>Үүсгэсэн</th>
                 <th></th>
               </tr>
             </thead>
@@ -26,10 +27,10 @@
               {% for o in object_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ o.name }}</td>
-                <td>{{ o.fee }}</td>
-                <td><a href="#shagnal{{ o.id }}" data-toggle="modal">Шагналын сан</a></td>
-                <td><a href="{% url 'manager_rank_update' o.id %}"><i class="fa fa-edit"></i></a></td>
+                <td>{{ o.angilal }}</td>
+                <td>{{ o.title }}</td>
+                <td>{{ o.created_at|date:"Y:m:d   f" }}</td>
+                <td><a href="{% url 'manager_news_update' o.id %}"><i class="fa fa-edit"></i></a></td>
               </tr>
               <!-- Modal -->
               <div class="modal fade" id="shagnal{{ o.id }}">

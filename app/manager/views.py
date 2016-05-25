@@ -10,8 +10,11 @@ from app.competition.models import (CompetitionRank, Competition)
 from .models import Manager
 from app.user.forms import LoginForm
 from django.http import HttpResponse
-
-__all__ = ['RankCreateExample','ManagerLoginView','ManagerHomeView', 'RankCreateView', 'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView', 'CompetitionListView']
+from app.web.models import *
+from app.web.forms import *
+__all__ = ['RankCreateExample','ManagerLoginView','ManagerHomeView', 'RankCreateView',
+	'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView',
+	'CompetitionListView', 'ManagerNewsView', 'ManagerNewsCreateView', 'ManagerNewsUpdateView']
 
 
 class RankCreateExample(CreateView):
@@ -26,7 +29,7 @@ class RankCreateExample(CreateView):
 
 class ManagerLoginView(FormView):
 	form_class = LoginForm
-	template_name = 'user/login.html'
+	template_name = 'manager/login.html'
 	success_url = reverse_lazy('manager_home')
 
 	def form_valid(self, form):
@@ -93,5 +96,22 @@ class CompetitionUpdateView(UpdateView):
 	form_class = CompetitionForm
 	template_name = 'manager/competition/competition_form.html'
 	success_url = reverse_lazy('manager_competition')
+
+
+class ManagerNewsView(ListView):
+	model = Medee
+	template_name = 'manager/news/news_list.html'
+
+class ManagerNewsCreateView(CreateView):
+	model = Medee
+	form_class = NewsForm
+	template_name = 'manager/news/news_create.html'
+	success_url = reverse_lazy('manager_news')
+
+class ManagerNewsUpdateView(UpdateView):
+	model = Medee
+	form_class = NewsForm
+	template_name = 'manager/news/news_create.html'
+	success_url = reverse_lazy('manager_news')
 
 # End Temtseen crud

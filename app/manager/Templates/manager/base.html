@@ -19,12 +19,21 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static 'assets/admin/dist/css/skins/_all-skins.min.css' %}">
 
+
   <script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
-  <script src="{% static 'assets/admin/bootstrap/js/bootstrap.min.js ' %}"></script>
+  <script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js ' %}"></script>
   <script src="{% static 'assets/admin/dist/js/app.min.js' %}"></script>
   <script src="{% static 'assets/admin/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
   <script src="{% static 'assets/js/RelatedObjectLookups.js' %}"></script>
   <script src="{% static 'assets/js/core.js' %}"></script>
+
+
+
+  <link href="/static/redactor/css/redactor.css" type="text/css" media="all" rel="stylesheet" />
+  <script type="text/javascript" src="/static/redactor/jquery.redactor.init.js"></script>
+  <script type="text/javascript" src="/static/redactor/redactor.js"></script>
+  <script type="text/javascript" src="/static/redactor/langs/en.js"></script>
+  
   {% endblock %}
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
@@ -119,8 +128,10 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href=""><i class="fa fa-circle-o"></i> Мэдээлэл</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> Видео</a></li>
+            <li><a href="{% url 'manager_news' %}"><i class="fa fa-circle-o"></i> Мэдээлэл</a></li>
+            <li><a href=""><i class="fa fa-circle-o"></i> Сургалт</a></li>
+            <li><a href=""><i class="fa fa-circle-o"></i> Судалгаа</a></li>
+            <li><a href=""><i class="fa fa-circle-o"></i> Бидний тухай</a></li>
           </ul>
         </li>
       </ul>
