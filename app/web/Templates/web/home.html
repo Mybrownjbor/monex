@@ -27,7 +27,14 @@
     </div>
     {% endfor %}
   </section>
-
+  <section class="wall">
+    <h2 class="title">Судалгаа</h2>
+    <ul>
+    {% for s in sudalgaa %}
+    <li><div class=""><a href="/media/{{ s.pdf_file }}">{{ s }}</a></div></li>
+    {% endfor %}
+    </ul>
+  </section>
   <section class="wall">  
     <h2 class="title">Сургалт</h2>
     <div class="row">

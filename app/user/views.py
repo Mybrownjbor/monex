@@ -27,9 +27,11 @@ class Login(FormView):
 
 	def form_valid(self, form):
 		user = authenticate(username = form.cleaned_data['username'], password = form.cleaned_data['password'])
-		if user:
+		if user and SystemUser.objects.filter(username = user.username):
 			login(self.request, user)
-		return super(Login, self).form_valid(form)
+			return super(Login, self).form_valid(form)
+		else:
+			return super(Login, self).form_invalid(form)
 
 	@staticmethod
 	def logout(request):

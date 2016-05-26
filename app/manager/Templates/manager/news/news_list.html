@@ -1,6 +1,8 @@
 {% extends 'manager/base.html' %}
 {% load i18n %}
 {% block content %}
+{% load pagination_tags %}
+{% autopaginate object_list 20 %}
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -53,6 +55,12 @@
               {% endfor %}
             </tbody>
           </table>
+        </div>
+        <div class="box-footer">
+          page {{ page }} of {{ paginator.num_pages }}
+          <div class="pull-right">
+            {% paginate %}
+          </div>
         </div>
       </div>
     </div>

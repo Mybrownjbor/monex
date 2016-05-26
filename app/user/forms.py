@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordResetForm, PasswordChangeForm
 
 
 
-__all__ = ['RegisterForm', 'PasswordForm','LoginForm', 'ProfileUpdateForm']
+__all__ = ['RegisterForm', 'LoginForm', 'ProfileUpdateForm']
 
 
 forms.Field.default_error_messages = {
@@ -52,6 +52,9 @@ class LoginForm(forms.Form):
 			user = authenticate(username = cleaned_data['username'], password = cleaned_data['password'])
 			if not user:
 				raise forms.ValidationError(_(u'Хэрэглэгчийн нэр эсвэл нууц үг буруу байна'), code='invalid')
+			else:
+				if not SystemUser.objects.filter(username = user.username):
+					raise forms.ValidationError(_(u'Хэрэглэгчийн нэр эсвэл нууц үг буруу байна'), code='invalid')
 		return cleaned_data
 
 

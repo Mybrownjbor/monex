@@ -5,21 +5,44 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (FormView, TemplateView, ListView, CreateView, UpdateView)
 from django.http import HttpResponseRedirect
-from .forms import (CompetitionRankForm, CompetitionForm)
+from .forms import (CompetitionRankForm, CompetitionForm, ManagerLoginForm)
 from app.competition.models import (CompetitionRank, Competition)
 from .models import Manager
 from app.user.forms import LoginForm
 from django.http import HttpResponse
 from app.web.models import *
 from app.web.forms import *
-__all__ = ['RankCreateExample','ManagerLoginView','ManagerHomeView', 'RankCreateView',
-	'CompetitionCreateView', 'RankUpdateView', 'CompetitionUpdateView', 'RankListView',
-	'CompetitionListView', 'ManagerNewsView', 'ManagerNewsCreateView', 'ManagerNewsUpdateView',
+from app.user.models import *
+from django.utils.html import escape
+
+from django_modalview.generic.base import ModalTemplateView
+from django_modalview.generic.edit import ModalFormView
+from django_modalview.generic.component import ModalResponse, ModalButton
+
+__all__ = ['ManagerRankCreateExample','ManagerLoginView','ManagerHomeView', 'ManagerRankCreateView',
+	'ManagerCompetitionCreateView', 'ManagerRankUpdateView', 'ManagerCompetitionUpdateView', 'ManagerRankListView',
+	'ManagerCompetitionListView', 'ManagerNewsView', 'ManagerNewsCreateView', 'ManagerNewsUpdateView',
 	'ManagerNewsCategoryCreateView', 'ManagerNewsCategoryUpdateView', 'ManagerAboutView',
-	'ManagerAboutCreateView', 'ManagerLessonView', 'ManagerLessonCreateView', 'ManagerLessonUpdateView']
+	'ManagerAboutCreateView', 'ManagerLessonView', 'ManagerLessonCreateView', 'ManagerLessonUpdateView',
+	'ManagerResearchView', 'ManagerResearchCreateView', 'ManagerResearchUpdateView', 'ManagerUserListView',
+	'MyModal']
 
 
-class RankCreateExample(CreateView):
+class MyModal(ModalFormView):
+	def __init__(self, *args, **kwargs):
+		super(MyModal, self).__init__(*args, **kwargs)
+		self.title = "Тэмцээний ангилал"
+		self.form_class = CompetitionRankForm
+		self.submit_button = ModalButton(value=u'Хадгалах', button_type='success btn-flat')
+		self.close_button = ModalButton(value=u'Хаах', button_type ='default btn-flat')
+
+	def form_valid(self, form, **kwargs):
+		self.response = ModalResponse('Амжилттай хадгалагдлаа', 'success')
+		form.save()
+		return super(MyModal, self).form_valid(form, **kwargs)
+
+
+class ManagerRankCreateExample(CreateView):
 	form_class = CompetitionRankForm
 	template_name = 'manager/rank_example.html'
 
@@ -30,7 +53,7 @@ class RankCreateExample(CreateView):
 		return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' % (model.id, model.name))
 
 class ManagerLoginView(FormView):
-	form_class = LoginForm
+	form_class = ManagerLoginForm
 	template_name = 'manager/login.html'
 	success_url = reverse_lazy('manager_home')
 
@@ -51,85 +74,94 @@ class ManagerLoginRequired(object):
 	@method_decorator(login_required)
 	def dispatch(self, request, *args, **kwargs):
 		user = request.user
-		print user.username
 		if Manager.objects.filter(username = user.username):	
 			return super(ManagerLoginRequired, self).dispatch(request, *args, **kwargs)
 		else:
 			return HttpResponseRedirect(reverse_lazy('manager_login'))
-class ManagerHomeView(ManagerLoginRequired, TemplateView):
 
+class ManagerHomeView(ManagerLoginRequired, TemplateView):
 	template_name = 'manager/home.html'
 
 # Temtseenii angilal crud
-class RankListView(ListView):
+class ManagerRankListView(ManagerLoginRequired, ListView):
 	model = CompetitionRank
 	template_name = 'manager/rank/rank_list.html'
 
 
-class RankCreateView(CreateView):
+class ManagerRankCreateView(ManagerLoginRequired, CreateView):
 	model = CompetitionRank
 	form_class = CompetitionRankForm
-	template_name = 'manager/rank/rank_form.html'
+	template_name = 'manager/rank/rank_create.html'
 	success_url = reverse_lazy('manager_rank')
 
 
-class RankUpdateView(UpdateView):
+class ManagerRankUpdateView(ManagerLoginRequired, UpdateView):
 	model = CompetitionRank
 	form_class = CompetitionRankForm
-	template_name = 'manager/rank/rank_form.html'
+	template_name = 'manager/rank/rank_update.html'
 	success_url = reverse_lazy('manager_rank')
 # End temtseenii angilal crud
 
 # Temtseen Crud
-class CompetitionListView(RankListView):
+class ManagerCompetitionListView(ManagerLoginRequired, ListView):
 	model = Competition
 	template_name = 'manager/competition/competition_list.html'
 
 
-class CompetitionCreateView(CreateView):
+class ManagerCompetitionCreateView(ManagerLoginRequired, CreateView):
 	model = Competition
 	form_class = CompetitionForm
 	template_name = 'manager/competition/competition_form.html'
 	success_url = reverse_lazy('manager_competition')
 
 
-class CompetitionUpdateView(UpdateView):
+class ManagerCompetitionUpdateView(ManagerLoginRequired, UpdateView):
 	model = Competition
 	form_class = CompetitionForm
 	template_name = 'manager/competition/competition_form.html'
 	success_url = reverse_lazy('manager_competition')
 
 
-class ManagerNewsView(ListView):
+class ManagerNewsView(ManagerLoginRequired, ListView):
 	model = Medee
 	template_name = 'manager/news/news_list.html'
 
-class ManagerNewsCreateView(CreateView):
+class ManagerNewsCreateView(ManagerLoginRequired, CreateView):
 	model = Medee
 	form_class = NewsForm
 	template_name = 'manager/news/news_create.html'
 	success_url = reverse_lazy('manager_news')
 
-class ManagerNewsUpdateView(UpdateView):
+class ManagerNewsUpdateView(ManagerLoginRequired, UpdateView):
 	model = Medee
 	form_class = NewsForm
 	template_name = 'manager/news/news_create.html'
 	success_url = reverse_lazy('manager_news')
 
-class ManagerNewsCategoryCreateView(CreateView):
+class ManagerNewsCategoryCreateView(ManagerLoginRequired, CreateView):
 	model = MedeeAngilal
-	fields = "__all__"
+	form_class = NewsCategoryForm
 	success_url = reverse_lazy('manager_home')
-	template_name = "manager/news/medee_angilal_form.html"
+	template_name = "manager/news/medee_angilal_popup_create.html"
+
+	def form_valid(self, form):
+		model = form.save(commit=False)
+		form.save()
+		if "_popup" in self.request.POST:
+			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' % (escape(model.pk), escape(model)))
 
 
-class ManagerNewsCategoryUpdateView(UpdateView):
+class ManagerNewsCategoryUpdateView(ManagerLoginRequired, UpdateView):
 	model = MedeeAngilal
+	form_class = NewsCategoryForm
 	success_url = reverse_lazy('manager_home')
-	fields = "__all__"
-	template_name = "manager/news/medee_angilal_form.html"
+	template_name = "manager/news/medee_angilal_popup_update.html"
 
-class ManagerAboutView(TemplateView):
+	def form_valid(self, form):
+		if "_popup" in self.request.POST:
+			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' % (escape(self.object.pk), escape(self.object)))
+
+class ManagerAboutView(ManagerLoginRequired, TemplateView):
 	template_name = 'manager/about/about.html'
 
 	def get_context_data(self, *args, **kwargs):
@@ -137,7 +169,7 @@ class ManagerAboutView(TemplateView):
 		context['about'] = BidniiTuhai.objects.first()
 		return context
 
-class ManagerAboutCreateView(FormView):
+class ManagerAboutCreateView(ManagerLoginRequired, FormView):
 	form_class = AboutForm
 	template_name = 'manager/about/about_create.html'
 	success_url = reverse_lazy('manager_about')
@@ -163,21 +195,42 @@ class ManagerAboutCreateView(FormView):
 			pass
 		return initial
 
-class ManagerLessonView(ListView):
+class ManagerLessonView(ManagerLoginRequired, ListView):
 	model = Surgalt
 	template_name = 'manager/lesson/lesson_list.html'
 
 
-class ManagerLessonCreateView(CreateView):
+class ManagerLessonCreateView(ManagerLoginRequired, CreateView):
 	model = Surgalt
 	form_class = LessonForm
 	template_name = 'manager/lesson/lesson_create.html'
 	success_url = reverse_lazy('manager_lesson')
-class ManagerLessonUpdateView(UpdateView):
+
+class ManagerLessonUpdateView(ManagerLoginRequired, UpdateView):
 	model = Surgalt
 	form_class = LessonForm
 	success_url = reverse_lazy('manager_lesson')
 	template_name = 'manager/lesson/lesson_update.html'
-	
 
+
+class ManagerResearchView(ManagerLoginRequired, ListView):
+	model = Sudalgaa
+	template_name = 'manager/research/research_list.html'
+
+
+class ManagerResearchCreateView(ManagerLoginRequired, CreateView):
+	model = Sudalgaa
+	form_class = ResearchForm
+	template_name = 'manager/research/research_create.html'
+	success_url = reverse_lazy('manager_research')
+	
+class ManagerResearchUpdateView(ManagerLoginRequired, UpdateView):
+	model = Sudalgaa
+	form_class = ResearchForm
+	success_url = reverse_lazy('manager_research')
+	template_name = 'manager/research/research_update.html'
+	
+class ManagerUserListView(ManagerLoginRequired, ListView):
+	model = SystemUser
+	template_name = 'manager/user/user.html'
 # End Temtseen crud

@@ -7,8 +7,24 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import BagtsForm
-__all__ = ['Home', 'About', 'News', 'Research', 'Lesson', 'Contact', 'NewsSelf', 'WebCompetitionCalendar', 'Calendar']
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+__all__ = ['Home', 'About', 'News', 'Research', 'Lesson', 'Contact', 'NewsSelf',
+'WebCompetitionCalendar', 'Calendar', 'h404']
 
+
+def h404(request):
+    response = render_to_response('web/404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request):
+    response = render_to_response('web/500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
 
 class Home(FormView):
 	form_class = BagtsForm

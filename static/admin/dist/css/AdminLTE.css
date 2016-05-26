@@ -5087,6 +5087,10 @@ table.text-center th {
 .chart canvas {
   width: 100% !important;
 }
+
+.control-label.errors{
+  font-size: 9px;
+}
 /*
  * Misc: print
  * -----------
@@ -5131,3 +5135,5 @@ table.text-center th {
     white-space: normal !important;
   }
 }
+
+

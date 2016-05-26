@@ -3,21 +3,21 @@ import re
 
 from django.db import models
 from redactor.fields import RedactorField
-
+from app.manager.models import Manager
 __all__ = ['MedeeAngilal', 'Medee', 'SudalgaaAngilal', 'Sudalgaa', 'SurgaltAngilal', 'Surgalt', 'BidniiTuhai', 'HolbooBarih']
 
 # Мэдээ
 class MedeeAngilal(models.Model):
-	name = models.CharField(max_length = 250)
+	name = models.CharField(max_length = 250, verbose_name = u"Мэдээ ангилал")
 
 	def __unicode__(self):
 		return unicode(self.name)
 
 class Medee(models.Model):
-	angilal = models.ForeignKey(MedeeAngilal)
-	title = models.CharField(max_length = 250)
-	body = RedactorField()
-	#created_by = models.ForeignKey(Manager)
+	angilal = models.ForeignKey(MedeeAngilal, verbose_name = u'Ангилал')
+	title = models.CharField(max_length = 250, verbose_name = u'Гарчиг')
+	body = RedactorField(verbose_name = u'Мэдээ')
+	created_by = models.ForeignKey(Manager, null = True, blank = True)
 	created_at = models.DateTimeField(auto_now_add = True)
 	view = models.SmallIntegerField(default = 0)
 

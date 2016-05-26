@@ -1,6 +1,15 @@
 {% extends 'manager/base.html' %}
 {% load i18n %}
 {% block content %}
+{% load pagination_tags %}
+{% autopaginate object_list 20 %}
+<section class="content-header">
+  <h1>{% trans 'Тэмцээний ангилал' %}</h1>
+  <ol class="breadcrumb">
+    <li><a href="{% url 'manager_home' %}"><i class="fa fa-dashboard"></i> {% trans 'Нүүр' %}</a></li>
+    <li class="active">{% trans 'Тэмцээний ангилал' %}</li>
+  </ol>
+</section>
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -10,6 +19,9 @@
           <h3 class="box-title">
             {% trans 'Тэмцээний ангилал' %}
             <a href="{% url 'manager_rank_create' %}"><i class="fa fa-plus-circle"></i></a>
+            <a id="my_modal" class='btn btn-primary btn-flat' href='{% url "mymodal"%}'>
+              {% trans 'Ангилал' %} <i class="fa fa-plus-circle"></i>
+            </a>
           </h3>
         </div>
         <div class="box-body">
@@ -32,7 +44,6 @@
                 <td><a href="#shagnal{{ o.id }}" data-toggle="modal">Шагналын сан</a></td>
                 <td><a href="{% url 'manager_rank_update' o.id %}"><i class="fa fa-edit"></i></a></td>
               </tr>
-              <!-- Modal -->
               <div class="modal fade" id="shagnal{{ o.id }}">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -49,13 +60,22 @@
                   </div>
                 </div>
               </div>
-              <!-- End Modal -->
               {% endfor %}
             </tbody>
           </table>
+        </div>
+        <div class="box-footer">
+          <div class="pull-right">
+            {% paginate %}
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  $(function(){
+    $('#my_modal').DjangoModalRunner();
+  });
+</script>
 {% endblock %}

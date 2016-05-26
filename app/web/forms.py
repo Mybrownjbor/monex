@@ -6,7 +6,7 @@ from .models import *
 from app.manager.forms import RelAdd
 from django.contrib.admin.sites import AdminSite
 my_admin_site = AdminSite(name='manager_rank_create')
-__all__ = ['BagtsForm', 'NewsForm', 'AboutForm', 'LessonForm']
+__all__ = ['BagtsForm', 'NewsForm', 'AboutForm', 'LessonForm', 'ResearchForm', 'NewsCategoryForm']
 
 class BagtsForm(forms.Form):
 	name = forms.CharField(label = u'Хувьцааны нэр', widget = forms.TextInput(attrs = {'class':'form-control'}))
@@ -58,3 +58,31 @@ class LessonForm(forms. ModelForm):
 			'author_name' : forms.TextInput(attrs = {'class':'form-control'}),
 			'author_email' : forms.EmailInput(attrs = {'class':'form-control'}),
 			}
+
+class ResearchForm(forms.ModelForm):
+
+	class Meta:
+		model = Sudalgaa
+		fields = "__all__"
+		widgets = {
+			'angilal' : RelAdd(
+				Sudalgaa._meta.get_field('angilal').formfield().widget,
+            	Sudalgaa._meta.get_field('angilal').rel,
+            	my_admin_site,
+            	can_add_related=True,
+            	can_change_related = True,
+            	),
+			'name' : forms.TextInput(attrs = {'class':'form-control'}),
+			'author_name' : forms.TextInput(attrs = {'class':'form-control'}),
+			'pdf_file' : forms.FileInput(attrs = {'class':'form-control'}),
+
+		}
+
+class NewsCategoryForm(forms.ModelForm):
+
+	class Meta:
+		model = MedeeAngilal
+		fields = "__all__"
+		widgets = {
+			'name' : forms.TextInput(attrs = {'class':'form-control'})
+		}

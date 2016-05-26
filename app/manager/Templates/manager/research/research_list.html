@@ -3,13 +3,20 @@
 {% block content %}
 {% load pagination_tags %}
 {% autopaginate object_list 20 %}
+<section class="content-header">
+  <h1>{% trans 'Судалгаа' %}</h1>
+  <ol class="breadcrumb">
+    <li><a href="{% url 'manager_home' %}"><i class="fa fa-dashboard"></i> {% trans 'Нүүр' %}</a></li>
+    <li>{% trans 'Судалгаа' %}</li>
+  </ol>
+</section>
 <div class="content">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box">
 				<div class="box-header with-border">
-					<h3 class="box-title">{% trans 'Сургалт' %}</h3>
-					<a href="{% url 'manager_lesson_create' %}"><i class="fa fa-plus-circle"></i></a>
+					<h3 class="box-title">{% trans 'Судалгаа' %}</h3>
+					<a href="{% url 'manager_research_create' %}"><i class="fa fa-plus-circle"></i></a>
 				</div>
 				<div class="box-body">
 					<table class="table table-bordered table-hover">
@@ -18,7 +25,7 @@
                 <th>№</th>
                 <th>Ангилал</th>
                 <th>Нэр</th>
-                <th>Хаяг</th>
+                <th>Файл</th>
                 <th></th>
               </tr>
             </thead>
@@ -27,16 +34,15 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ o.angilal }}</td>
-                <td>{{ o.video_name }}</td>
-                <td><a href="{{ o.url }}">{{ o.url }}</a></td>
-                <td><a href="{% url 'manager_lesson_update' o.id %}"><i class="fa fa-edit"></i></a></td>
+                <td>{{ o.name }}</td>
+                <td><a href="/media/{{ o.pdf_file }}">{{ o.pdf_file }}</a></td>
+                <td><a href="{% url 'manager_research_update' o.id %}"><i class="fa fa-edit"></i></a></td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
 				</div>
 				<div class="box-footer">
-          page {{ page }} of {{ paginator.num_pages }}
           <div class="pull-right">
             {% paginate %}
           </div>
