@@ -11,6 +11,14 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{% static 'assets/admin/dist/css/AdminLTE.css' %}">
 <link rel="stylesheet" href="{% static 'assets/admin/dist/css/skins/_all-skins.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/admin/plugins/iCheck/square/blue.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/admin/plugins/iCheck/square/blue.css' %}">
+
+<script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
+<script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/admin/plugins/iCheck/icheck.min.js' %}"></script>
+
 
 <body class="hold-transition login-page">
   <div class="login-box">
@@ -28,7 +36,7 @@
       {% endfor %}
       {% endif %}
       <form method="post">{% csrf_token %}
-        <div class="form-group-sm {% if form.username.errors %}has-error{% endif %} has-feedback">
+        <div class="form-group {% if form.username.errors %}has-error{% endif %} has-feedback">
           {% if form.username.errors %}
           <label class="control-label errors" for="inputError"><i class="fa fa-times-circle-o"></i>
             {% for error in form.username.errors %}
@@ -38,7 +46,7 @@
           {% endif %}
           {{ form.username }}
         </div>
-        <div class="form-group-sm {% if form.password.errors %}has-error{% endif %} has-feedback">
+        <div class="form-group {% if form.password.errors %}has-error{% endif %} has-feedback">
           {% if form.password.errors %}
           <label class="control-label errors" for="inputError"><i class="fa fa-times-circle-o"></i>
             {% for error in form.password.errors %}
@@ -62,7 +70,16 @@
           </div>
         </div>
       </form>
-      <a href="#">Нууц үгээ мартсан</a><br>
+      <a href="{% url 'password_reset' %}">Нууц үгээ мартсан</a><br>
     </div>
   </div>
 </body>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>

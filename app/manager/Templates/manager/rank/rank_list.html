@@ -19,7 +19,7 @@
           <h3 class="box-title">
             {% trans 'Тэмцээний ангилал' %}
             <a href="{% url 'manager_rank_create' %}"><i class="fa fa-plus-circle"></i></a>
-            <a id="my_modal" class='btn btn-primary btn-flat' href='{% url "mymodal"%}'>
+            <a data-modal="modalview" class='btn btn-primary btn-flat' href='{% url "mymodal"%}'>
               {% trans 'Ангилал' %} <i class="fa fa-plus-circle"></i>
             </a>
           </h3>
@@ -41,8 +41,13 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ o.name }}</td>
                 <td>{{ o.fee }}</td>
-                <td><a href="#shagnal{{ o.id }}" data-toggle="modal">Шагналын сан</a></td>
-                <td><a href="{% url 'manager_rank_update' o.id %}"><i class="fa fa-edit"></i></a></td>
+                <td>
+                  <a href="#shagnal{{ o.id }}" data-toggle="modal">Шагналын сан</a>
+                </td>
+                <td>
+                  <a href="{% url 'manager_rank_update' o.id %}"><i class="fa fa-edit"></i></a>
+                  <a href="{% url 'mymodal_update' o.id %}" data-modal="modalview"><i class="fa fa-edit"></i></a>
+                </td>
               </tr>
               <div class="modal fade" id="shagnal{{ o.id }}">
                 <div class="modal-dialog">
@@ -73,9 +78,4 @@
     </div>
   </div>
 </section>
-<script type="text/javascript">
-  $(function(){
-    $('#my_modal').DjangoModalRunner();
-  });
-</script>
 {% endblock %}

@@ -11,8 +11,6 @@ from app.user.forms import UserPasswordResetForm, UserPasswordChangeForm
 handler404 = 'app.web.views.h404'
 #handler500 = 'my_app.views.server_error'
 
-import debug_toolbar
-
 urlpatterns = [
 
 	url(r'^password_reset/$', views.password_reset, {'template_name' : 'user/password/password_reset.html', 'password_reset_form' : UserPasswordResetForm},
@@ -59,5 +57,4 @@ if settings.DEBUG is False:
     urlpatterns += patterns('',
 		url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 		url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-        url(r'^__debug__/', include(debug_toolbar.urls)),
 	)

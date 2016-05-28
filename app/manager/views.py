@@ -5,42 +5,83 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (FormView, TemplateView, ListView, CreateView, UpdateView)
 from django.http import HttpResponseRedirect
-from .forms import (CompetitionRankForm, CompetitionForm, ManagerLoginForm)
-from app.competition.models import (CompetitionRank, Competition)
-from .models import Manager
-from app.user.forms import LoginForm
 from django.http import HttpResponse
+from django.utils.html import escape
+
+
+from .forms import *
+from .models import Manager
+from app.competition.models import (CompetitionRank, Competition)
+from app.user.forms import LoginForm
 from app.web.models import *
 from app.web.forms import *
 from app.user.models import *
-from django.utils.html import escape
 
 from django_modalview.generic.base import ModalTemplateView
-from django_modalview.generic.edit import ModalFormView
+from django_modalview.generic.edit import ModalFormView, ModalCreateView, ModalUpdateView
 from django_modalview.generic.component import ModalResponse, ModalButton
+from django_modalview.generic.response import ModalJsonResponseRedirect
 
 __all__ = ['ManagerRankCreateExample','ManagerLoginView','ManagerHomeView', 'ManagerRankCreateView',
-	'ManagerCompetitionCreateView', 'ManagerRankUpdateView', 'ManagerCompetitionUpdateView', 'ManagerRankListView',
-	'ManagerCompetitionListView', 'ManagerNewsView', 'ManagerNewsCreateView', 'ManagerNewsUpdateView',
-	'ManagerNewsCategoryCreateView', 'ManagerNewsCategoryUpdateView', 'ManagerAboutView',
-	'ManagerAboutCreateView', 'ManagerLessonView', 'ManagerLessonCreateView', 'ManagerLessonUpdateView',
-	'ManagerResearchView', 'ManagerResearchCreateView', 'ManagerResearchUpdateView', 'ManagerUserListView',
-	'MyModal']
+	'ManagerCompetitionCreateView', 'ManagerRankUpdateView', 'ManagerCompetitionUpdateView',
+	'ManagerRankListView', 'ManagerCompetitionListView', 'ManagerNewsView', 'ManagerNewsCreateView',
+	'ManagerNewsUpdateView', 'ManagerNewsCategoryCreateView', 'ManagerNewsCategoryUpdateView',
+	'ManagerAboutView', 'ManagerAboutCreateView', 'ManagerLessonView', 'ManagerLessonCreateView',
+	'ManagerLessonUpdateView', 'ManagerResearchView', 'ManagerResearchCreateView', 'ManagerResearchUpdateView',
+	'ManagerUserListView', 'MyModal', 'MyModalUpdate', 'ManagerCompetitionRankCreateView',
+	'ManagerCompetitionRankUpdateView']
 
 
-class MyModal(ModalFormView):
+class PopupCreate(object):
+
+	def form_valid(self, form):
+		model = form.save(commit=False)
+		form.save()
+		if "_popup" in self.request.POST:
+			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>'\
+				% (escape(model.pk), escape(model)))
+
+class PopupUpdate(object):
+
+	def form_valid(self, form):
+		if "_popup" in self.request.POST:
+			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>'\
+				% (escape(self.object.pk), escape(self.object)))
+
+class MyModal(ModalCreateView):
 	def __init__(self, *args, **kwargs):
 		super(MyModal, self).__init__(*args, **kwargs)
 		self.title = "Тэмцээний ангилал"
 		self.form_class = CompetitionRankForm
-		self.submit_button = ModalButton(value=u'Хадгалах', button_type='success btn-flat')
+		self.submit_button = ModalButton(value=u'Хадгалах', loading_value = "Уншиж байна...",
+			button_type='success btn-flat')
 		self.close_button = ModalButton(value=u'Хаах', button_type ='default btn-flat')
 
 	def form_valid(self, form, **kwargs):
-		self.response = ModalResponse('Амжилттай хадгалагдлаа', 'success')
-		form.save()
-		return super(MyModal, self).form_valid(form, **kwargs)
+		#self.response = ModalResponse('Амжилттай хадгалагдлаа', 'success')
+		#form.save()
+		self.save(form)
+		self.response = ModalResponse("{obj} is created".format(obj=self.object), 'success')
+		return super(MyModal, self).form_valid(form, commit = False, **kwargs)
 
+class MyModalUpdate(ModalUpdateView):
+	def __init__(self, *args, **kwargs):
+		super(MyModalUpdate, self).__init__(*args, **kwargs)
+		self.title = "Тэмцээний ангилал"
+		self.form_class = CompetitionRankForm
+		self.submit_button = ModalButton(value=u'Хадгалах', loading_value = "Уншиж байна...",
+			button_type='success btn-flat')
+		self.close_button = ModalButton(value=u'Хаах', button_type ='default btn-flat')
+
+	def dispatch(self, request, *args, **kwargs):
+		self.object = CompetitionRank.objects.get(pk=kwargs.get('pk'))
+		return super(MyModalUpdate, self).dispatch(request, *args, **kwargs)
+
+
+	def form_valid(self, form, **kwargs):
+		self.save(form)
+		self.response = ModalResponse("{obj} амжилттай шинэчлэгдлээ".format(obj=self.object), 'success')
+		return super(MyModalUpdate, self).form_valid(form, commit = False, **kwargs)
 
 class ManagerRankCreateExample(CreateView):
 	form_class = CompetitionRankForm
@@ -50,7 +91,8 @@ class ManagerRankCreateExample(CreateView):
 		model = form.save(commit=False)
 		form.save()
 		#if "_popup" in self.request.POST:
-		return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>' % (model.id, model.name))
+		return HttpResponse('<script>opener.closeAddPopup(window, "%s", "%s");</script>'\
+			% (model.id, model.name))
 
 class ManagerLoginView(FormView):
 	form_class = ManagerLoginForm
@@ -102,25 +144,35 @@ class ManagerRankUpdateView(ManagerLoginRequired, UpdateView):
 	success_url = reverse_lazy('manager_rank')
 # End temtseenii angilal crud
 
-# Temtseen Crud
+''' Тэмцээний crud view '''
 class ManagerCompetitionListView(ManagerLoginRequired, ListView):
 	model = Competition
 	template_name = 'manager/competition/competition_list.html'
 
-
 class ManagerCompetitionCreateView(ManagerLoginRequired, CreateView):
 	model = Competition
 	form_class = CompetitionForm
-	template_name = 'manager/competition/competition_form.html'
+	template_name = 'manager/competition/competition_create.html'
 	success_url = reverse_lazy('manager_competition')
-
 
 class ManagerCompetitionUpdateView(ManagerLoginRequired, UpdateView):
 	model = Competition
 	form_class = CompetitionForm
-	template_name = 'manager/competition/competition_form.html'
+	template_name = 'manager/competition/competition_update.html'
 	success_url = reverse_lazy('manager_competition')
 
+class ManagerCompetitionRankCreateView(PopupCreate, ManagerLoginRequired, CreateView):
+	model = CompetitionRank
+	form_class = CompetitionRankForm
+	template_name = 'manager/competition/competition_rank_create.html'
+	success_url = reverse_lazy('manager_competition')
+
+class ManagerCompetitionRankUpdateView(PopupCreate, ManagerLoginRequired, UpdateView):
+	model = CompetitionRank
+	form_class = CompetitionRankForm
+	template_name = 'manager/competition/competition_rank_update.html'
+	success_url = reverse_lazy('manager_competition')
+''' Төгсгөл тэмцээний crud view '''
 
 class ManagerNewsView(ManagerLoginRequired, ListView):
 	model = Medee
@@ -148,8 +200,8 @@ class ManagerNewsCategoryCreateView(ManagerLoginRequired, CreateView):
 		model = form.save(commit=False)
 		form.save()
 		if "_popup" in self.request.POST:
-			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' % (escape(model.pk), escape(model)))
-
+			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>'\
+				% (escape(model.pk), escape(model)))
 
 class ManagerNewsCategoryUpdateView(ManagerLoginRequired, UpdateView):
 	model = MedeeAngilal
@@ -159,7 +211,8 @@ class ManagerNewsCategoryUpdateView(ManagerLoginRequired, UpdateView):
 
 	def form_valid(self, form):
 		if "_popup" in self.request.POST:
-			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' % (escape(self.object.pk), escape(self.object)))
+			return HttpResponse('<script>opener.dismissAddAnotherPopup(window, "%s", "%s");</script>'\
+				% (escape(self.object.pk), escape(self.object)))
 
 class ManagerAboutView(ManagerLoginRequired, TemplateView):
 	template_name = 'manager/about/about.html'
@@ -199,7 +252,6 @@ class ManagerLessonView(ManagerLoginRequired, ListView):
 	model = Surgalt
 	template_name = 'manager/lesson/lesson_list.html'
 
-
 class ManagerLessonCreateView(ManagerLoginRequired, CreateView):
 	model = Surgalt
 	form_class = LessonForm
@@ -212,11 +264,9 @@ class ManagerLessonUpdateView(ManagerLoginRequired, UpdateView):
 	success_url = reverse_lazy('manager_lesson')
 	template_name = 'manager/lesson/lesson_update.html'
 
-
 class ManagerResearchView(ManagerLoginRequired, ListView):
 	model = Sudalgaa
 	template_name = 'manager/research/research_list.html'
-
 
 class ManagerResearchCreateView(ManagerLoginRequired, CreateView):
 	model = Sudalgaa

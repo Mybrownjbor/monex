@@ -1,7 +1,15 @@
 {% extends 'manager/base.html' %}
+{% load i18n %}
 {% block content %}
 {% load pagination_tags %}
 {% autopaginate object_list 20 %}
+<section class="content-header">
+  <h1>{% trans 'Тэмцээн' %}</h1>
+  <ol class="breadcrumb">
+    <li><a href="{% url 'manager_home' %}"><i class="fa fa-dashboard"></i> {% trans 'Нүүр' %}</a></li>
+    <li class="active">{% trans 'Тэмцээн' %}</li>
+  </ol>
+</section>
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -21,8 +29,8 @@
                 <th>Ангилал</th>
                 <th>Эхлэх огноо</th>
                 <th>Дуусах огноо</th>
-                <th>Дуусах огноо</th>
                 <th>Төлөв</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -40,7 +48,6 @@
           </table>
         </div>
         <div class="box-footer">
-          page {{ page }} of {{ paginator.num_pages }}
           <div class="pull-right">
             {% paginate %}
           </div>

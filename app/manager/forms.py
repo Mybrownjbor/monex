@@ -1,17 +1,21 @@
 # -*- coding:utf-8 -*-
 
 from django import forms
-from django.contrib.auth import authenticate
-from bootstrap3_datetime.widgets import DateTimePicker
-from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
-from app.competition.models import CompetitionRank, Competition
+from django.utils.translation import ugettext as _
+
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 from django.conf import settings
+
+from django.contrib.auth import authenticate
+from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 from django.contrib.admin.sites import AdminSite
+
+from bootstrap3_datetime.widgets import DateTimePicker
+
+from app.competition.models import CompetitionRank, Competition
 from app.user.forms import *
 from .models import Manager
-from django.utils.translation import ugettext as _
 
 __all__ = ['CompetitionForm', 'CompetitionRankForm', 'ManagerLoginForm']
 
@@ -27,9 +31,8 @@ class RelAdd(RelatedFieldWidgetWrapper):
 		self.attrs['class'] = 'form-control'
 		self.attrs['style'] = 'width:90%;' #= {'class' : 'form-control'}
 
-	
-#	def get_related_url(self, info, action, *args):
-#		return reverse("manager_%s_%s_%s" % (info + (action,)), args = args)
+	def get_related_url(self, info, action, *args):
+		return reverse("manager_%s_%s_%s" % (info + (action,)), args = args)
 
 
 

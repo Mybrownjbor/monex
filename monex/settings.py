@@ -44,7 +44,6 @@ INSTALLED_APPS = (
     'app.competition',
     'redactor',
     'bootstrap3_datetime',
-    'debug_toolbar',
     'pagination_bootstrap',
     'django_modalview',
 )

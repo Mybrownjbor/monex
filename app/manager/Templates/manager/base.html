@@ -31,7 +31,6 @@
   <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
   <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
 
-
   <link rel="stylesheet" href="{% static 'django_modalview/css/modal.css' %}" type="text/css" />
   <script type="text/javascript" src="{% static 'django_modalview/js/django_modal_view.js' %}"></script>
   <script type="text/javascript" src="{% static 'django_modalview/js/jquery.form.js' %}"></script>
@@ -206,5 +205,25 @@
     {% endblock %}
     <div class="control-sidebar-bg"></div>
   </div>
+  <script type="text/javascript">
+    $(function(){
+      $('[data-modal="modalview"]').DjangoModalRunner({
+        //on_show_modal: function(){
+        //},
+        //on_hide_modal: function(){
+        //},
+        //on_hide_modal_after_submit: function(){
+        //},
+        on_submit: function(){
+          //location.reload();
+        }
+        //on_done: function(){
+        //}
+      });
+    });
+    $(function() {
+      $.fn.modal.Constructor.DEFAULTS.backdrop = 'static';
+    });
+  </script>
 </body>
 </html>

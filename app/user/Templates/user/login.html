@@ -1,58 +1,63 @@
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Monex</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!--CSS-->
-    <link rel="stylesheet" href="{% static 'assets/assets/bootstrap/css/bootstrap.min.css' %}">
-    <!--JS-->
-    <script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
-    <script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js' %}"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="wall" style="margin-top:200px;">
-          <div class="col-md-4 col-md-offset-4">
-            <p class="text-center">Нэвтрэх цонх</p>
-            <form method="post">{% csrf_token %}
-              {% if form.non_field_errors %}
-              {% for error in form.non_field_errors %}
-              <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <i class="icon fa fa-ban"></i> {{ error }}
-              </div>
-              {% endfor %}
-              {% endif %}
-              {% for f in form %}
-              <div class="{% if f.errors %}has-error{% endif %}">
-                {% if f.errors %}
-                <label class="control-label" for="inputError">
-                  {% for error in f.errors %}
-                    {{ error }}
-                  {% endfor %}
-                </label>
-                {% endif %}
-                {{ f }}
-              </div>
-              {% endfor %}
-              <div class="row">
-                <div class="col-md-12">
-                  Нууц үгээ мартсан бол <a href="{% url 'password_reset' %}">ЭНД </a>дарна уу
-                  <a class="pull-right" href="{% url 'register' %}">БҮРТГҮҮЛЭХ</a>
-                </div>
-                <div class="col-md-12">
-                  <button type="submit" class="btn btn-success btn-block btn-flat">НЭВТРЭХ</button>
-                </div>
-              </div>
-            </form>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>MONEX</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="{% static 'assets/assets/bootstrap/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/admin/dist/css/AdminLTE.css' %}">
+<link rel="stylesheet" href="{% static 'assets/admin/dist/css/skins/_all-skins.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/admin/plugins/iCheck/square/blue.css' %}">
+<link rel="stylesheet" href="{% static 'assets/admin/plugins/iCheck/square/blue.css' %}">
+<script src="{% static 'assets/js/jQuery-2.2.0.min.js' %}"></script>
+<script src="{% static 'assets/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/admin/plugins/iCheck/icheck.min.js' %}"></script>
+
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="{% url 'manager_login' %}"><b>Monex</b></a>
+    </div>
+    <div class="login-box-body">
+      <p class="login-box-msg">Нууц үг</p>
+      {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+      <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="icon fa fa-ban"></i> {{ error }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      <form method="post">{% csrf_token %}
+        {% for f in form %}
+        <div class="form-group {% if form.username.errors %}has-error{% endif %} has-feedback">
+          {% if f.errors %}
+          <label class="control-label errors" for="inputError"><i class="fa fa-times-circle-o"></i>
+            {% for error in f.errors %}
+              {{ error }}
+            {% endfor %}
+          </label>
+          {% endif %}
+          {{ f }}
+        </div>
+        {% endfor %}
+        <div class="row">
+          <div class="col-xs-8"><a href="{% url 'password_reset' %}">Нууц үгээ мартсан</a></div>
+          <div class="col-xs-4"><a href="{% url 'register' %}">БҮРТГҮҮЛЭХ</a></div>
+          <div class="col-xs-12">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Нэвтрэх</button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
-  </body>
-</html>
-
+  </div>
+</body>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
