@@ -133,14 +133,14 @@ class ManagerRankListView(ManagerLoginRequired, ListView):
 class ManagerRankCreateView(ManagerLoginRequired, CreateView):
 	model = CompetitionRank
 	form_class = CompetitionRankForm
-	template_name = 'manager/rank/rank_create.html'
+	template_name = 'manager/rank/rank_form.html'
 	success_url = reverse_lazy('manager_rank')
 
 
 class ManagerRankUpdateView(ManagerLoginRequired, UpdateView):
 	model = CompetitionRank
 	form_class = CompetitionRankForm
-	template_name = 'manager/rank/rank_update.html'
+	template_name = 'manager/rank/rank_form.html'
 	success_url = reverse_lazy('manager_rank')
 # End temtseenii angilal crud
 

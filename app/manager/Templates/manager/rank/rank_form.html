@@ -2,11 +2,17 @@
 {% load i18n %}
 {% block content %}
 <section class="content-header">
-  <h1>{% trans 'Тэмцээний ангилал' %}</h1>
+  <h1>{% trans 'Тэмцээний ангилал' %}{% if object %}asdfasdf{% endif %}</h1>
   <ol class="breadcrumb">
     <li><a href="{% url 'manager_home' %}"><i class="fa fa-dashboard"></i> {% trans 'Нүүр' %}</a></li>
     <li><a href="{% url 'manager_rank_list' %}">{% trans 'Тэмцээний ангилал' %}</a></li>
-    <li class="active">{% trans 'Тэмцээний ангилал засварлах' %}</li>
+    <li class="active">
+    	{% if object %}
+    	{% trans 'Тэмцээний ангилал засварлах' %}
+    	{% else %}
+    	{% trans 'Тэмцээний ангилал нэмэх' %}
+    	{% endif %}
+    </li>
   </ol>
 </section>
 <section class="content">
@@ -14,7 +20,13 @@
 		<div class="col-md-12">
 		  <div class="box">
 		    <div class="box-header with-border">
-		      <h3 class="box-title">Ангилал засварлах</h3>
+		      <h3 class="box-title">
+		      	{% if object %}
+		      	{% trans 'Ангилал засварлах' %}
+		      	{% else %}
+		      	{% trans 'Ангилал нэмэх' %}
+		      	{% endif %}
+		      </h3>
 		    </div>
 		    <form role="form" method="post">{% csrf_token %}
 		      <div class="box-body">
