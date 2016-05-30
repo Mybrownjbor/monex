@@ -28,6 +28,7 @@ class RelAdd(RelatedFieldWidgetWrapper):
 
 	def __init__(self, *args, **kwargs):
 		super(RelAdd, self).__init__(*args, **kwargs)
+		self.admin_site = my_admin_site
 		self.attrs['class'] = 'form-control'
 		self.attrs['style'] = 'width:90%;' #= {'class' : 'form-control'}
 

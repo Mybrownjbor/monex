@@ -55,17 +55,17 @@ class Sudalgaa(models.Model):
 
 #Сургалт
 class SurgaltAngilal(models.Model):
-	name = models.CharField(max_length = 250)
+	name = models.CharField(max_length = 250, verbose_name = u'Ангилал')
 
 	def __unicode__(self):
 		return unicode(self.name)
 
 class Surgalt(models.Model):
-	angilal = models.ForeignKey(SurgaltAngilal)
-	video_name = models.CharField(max_length = 200, null = True)
-	url = models.URLField(null = True, blank = True)
-	author_name = models.CharField(max_length = 100)
-	author_email = models.EmailField()
+	angilal = models.ForeignKey(SurgaltAngilal, verbose_name = u'Ангилал')
+	video_name = models.CharField(max_length = 200, null = True, verbose_name = u'Видео нэр')
+	url = models.URLField(null = True, blank = True, verbose_name = u'Видео')
+	author_name = models.CharField(max_length = 100, verbose_name = u'Хичээл заасан багш')
+	author_email = models.EmailField(verbose_name = u'Хичээл заасан багшийн э-мэйл')
 
 	def image(self):
 		return "http://img.youtube.com/vi/%s/0.jpg" %self.url[32:]

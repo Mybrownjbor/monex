@@ -29,7 +29,7 @@ __all__ = ['ManagerRankCreateExample','ManagerLoginView','ManagerHomeView', 'Man
 	'ManagerAboutView', 'ManagerAboutCreateView', 'ManagerLessonView', 'ManagerLessonCreateView',
 	'ManagerLessonUpdateView', 'ManagerResearchView', 'ManagerResearchCreateView', 'ManagerResearchUpdateView',
 	'ManagerUserListView', 'MyModal', 'MyModalUpdate', 'ManagerCompetitionRankCreateView',
-	'ManagerCompetitionRankUpdateView']
+	'ManagerCompetitionRankUpdateView', 'ManagerLessonCategoryUpdateView', 'ManagerLessonCategoryCreateView']
 
 
 class PopupCreate(object):
@@ -255,14 +255,28 @@ class ManagerLessonView(ManagerLoginRequired, ListView):
 class ManagerLessonCreateView(ManagerLoginRequired, CreateView):
 	model = Surgalt
 	form_class = LessonForm
-	template_name = 'manager/lesson/lesson_create.html'
+	template_name = 'manager/lesson/lesson_form.html'
 	success_url = reverse_lazy('manager_lesson')
 
 class ManagerLessonUpdateView(ManagerLoginRequired, UpdateView):
 	model = Surgalt
 	form_class = LessonForm
 	success_url = reverse_lazy('manager_lesson')
-	template_name = 'manager/lesson/lesson_update.html'
+	template_name = 'manager/lesson/lesson_form.html'
+
+class ManagerLessonCategoryCreateView(PopupCreate, ManagerLoginRequired, CreateView):
+	model = SurgaltAngilal
+	form_class = LessonCategoryForm
+	template_name = 'manager/lesson/lesson_category_form.html'
+	success_url = reverse_lazy('manager_competition')
+
+class ManagerLessonCategoryUpdateView(PopupCreate, ManagerLoginRequired, UpdateView):
+	model = SurgaltAngilal
+	form_class = LessonCategoryForm
+	template_name = 'manager/lesson/lesson_category_form.html'
+	success_url = reverse_lazy('manager_competition')
+
+
 
 class ManagerResearchView(ManagerLoginRequired, ListView):
 	model = Sudalgaa

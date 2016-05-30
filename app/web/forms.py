@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 
 from django import forms
-from redactor.widgets import RedactorEditor
+#from redactor.widgets import RedactorEditor
 from .models import *
 from app.manager.forms import RelAdd
 from django.contrib.admin.sites import AdminSite
 my_admin_site = AdminSite(name='manager_rank_create')
-__all__ = ['BagtsForm', 'NewsForm', 'AboutForm', 'LessonForm', 'ResearchForm', 'NewsCategoryForm']
+__all__ = ['BagtsForm', 'NewsForm', 'AboutForm', 'LessonForm', 'ResearchForm', 'NewsCategoryForm',
+			'LessonCategoryForm']
 
 class BagtsForm(forms.Form):
 	name = forms.CharField(label = u'Хувьцааны нэр', widget = forms.TextInput(attrs = {'class':'form-control'}))
@@ -85,4 +86,13 @@ class NewsCategoryForm(forms.ModelForm):
 		fields = "__all__"
 		widgets = {
 			'name' : forms.TextInput(attrs = {'class':'form-control'})
+		}
+
+class LessonCategoryForm(forms.ModelForm):
+
+	class Meta:
+		model = SurgaltAngilal
+		fields = "__all__"
+		widgets = {
+			'name' : forms.TextInput(attrs = {'class' : 'form-control'})
 		}
