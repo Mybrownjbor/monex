@@ -6,7 +6,13 @@
   <ol class="breadcrumb">
     <li><a href="{% url 'manager_home' %}"><i class="fa fa-dashboard"></i> {% trans 'Нүүр' %}</a></li>
     <li><a href="{% url 'manager_research' %}">{% trans 'Судалгаа' %}</a></li>
-    <li class="active">{% trans 'Судалгаа нэмэх' %}</li>
+    <li class="active">
+    	{% if object %}
+    	{% trans 'Судалгаа засварлах' %}
+    	{% else %}
+    	{% trans 'Судалгаа нэмэх' %}
+    	{% endif %}
+    </li>
   </ol>
 </section>
 <div class="content">
@@ -14,7 +20,13 @@
 		<div class="col-md-12">
 			<div class="box">
 				<div class="box-header with-border">
-					<h3 class="box-title">{% trans 'Судалгаа нэмэх' %}</h3>
+					<h3 class="box-title">
+						{% if object %}
+						{% trans 'Судалгаа засварлах' %}
+						{% else %}
+						{% trans 'Судалгаа нэмэх' %}
+						{% endif %}
+					</h3>
 				</div>
 				<form method="post" enctype="multipart/form-data">{% csrf_token %}
 					<div class="box-body">
@@ -30,7 +42,7 @@
 					</div>
 					<div class="box-footer">
 						<div class="pull-right">
-							<button type="submit" class="btn btn-success btn-flat">Хадгалах</button>
+							<button type="submit" class="btn btn-success btn-flat">{% trans 'Хадгалах' %}</button>
 						</div>
 					</div>
 				</form>

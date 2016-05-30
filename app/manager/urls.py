@@ -45,6 +45,10 @@ urlpatterns = [
 	url(r'^research/create/$', ManagerResearchCreateView.as_view(), name = 'manager_research_create'),
 	url(r'^research/update/(?P<pk>[0-9]+)/$', ManagerResearchUpdateView.as_view(),
 		name = 'manager_research_update'),
+	url(r'^research/category/update/(?P<pk>[0-9A-Za-z\_]+)/$', ManagerResearchCategoryUpdateView.as_view(),
+		name = 'manager_web_sudalgaaangilal_change'),
+	url(r'^research/category/create/$', ManagerResearchCategoryCreateView.as_view(),
+		name = 'manager_web_sudalgaaangilal_add'),
 	
 	url(r'^users/$', ManagerUserListView.as_view(), name = 'manager_user_list'),
 

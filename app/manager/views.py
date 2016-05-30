@@ -29,7 +29,8 @@ __all__ = ['ManagerRankCreateExample','ManagerLoginView','ManagerHomeView', 'Man
 	'ManagerAboutView', 'ManagerAboutCreateView', 'ManagerLessonView', 'ManagerLessonCreateView',
 	'ManagerLessonUpdateView', 'ManagerResearchView', 'ManagerResearchCreateView', 'ManagerResearchUpdateView',
 	'ManagerUserListView', 'MyModal', 'MyModalUpdate', 'ManagerCompetitionRankCreateView',
-	'ManagerCompetitionRankUpdateView', 'ManagerLessonCategoryUpdateView', 'ManagerLessonCategoryCreateView']
+	'ManagerCompetitionRankUpdateView', 'ManagerLessonCategoryUpdateView', 'ManagerLessonCategoryCreateView',
+	'ManagerResearchCategoryUpdateView', 'ManagerResearchCategoryCreateView']
 
 
 class PopupCreate(object):
@@ -285,14 +286,26 @@ class ManagerResearchView(ManagerLoginRequired, ListView):
 class ManagerResearchCreateView(ManagerLoginRequired, CreateView):
 	model = Sudalgaa
 	form_class = ResearchForm
-	template_name = 'manager/research/research_create.html'
+	template_name = 'manager/research/research_form.html'
 	success_url = reverse_lazy('manager_research')
 	
 class ManagerResearchUpdateView(ManagerLoginRequired, UpdateView):
 	model = Sudalgaa
 	form_class = ResearchForm
 	success_url = reverse_lazy('manager_research')
-	template_name = 'manager/research/research_update.html'
+	template_name = 'manager/research/research_form.html'
+
+class ManagerResearchCategoryCreateView(PopupCreate, ManagerLoginRequired, CreateView):
+	model = SudalgaaAngilal
+	form_class = ResearchCategoryForm
+	template_name = 'manager/research/research_category_form.html'
+	success_url = reverse_lazy('manager_competition')
+
+class ManagerResearchCategoryUpdateView(PopupCreate, ManagerLoginRequired, UpdateView):
+	model = SudalgaaAngilal
+	form_class = ResearchCategoryForm
+	template_name = 'manager/research/research_category_form.html'
+	success_url = reverse_lazy('manager_competition')
 	
 class ManagerUserListView(ManagerLoginRequired, ListView):
 	model = SystemUser

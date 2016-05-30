@@ -38,17 +38,17 @@ class Medee(models.Model):
 
 # Судалгаа
 class SudalgaaAngilal(models.Model):
-	name = models.CharField(max_length = 250)
+	name = models.CharField(max_length = 250, verbose_name = u'Ангилал')
 
 	def __unicode__(self):
 		return unicode(self.name)
 
 
 class Sudalgaa(models.Model):
-	angilal = models.ForeignKey(SudalgaaAngilal)
-	name = models.CharField(max_length = 100)
-	author_name = models.CharField(max_length = 100)
-	pdf_file = models.FileField()
+	angilal = models.ForeignKey(SudalgaaAngilal, verbose_name = u'Ангилал')
+	name = models.CharField(max_length = 100, verbose_name = u'Нэр')
+	author_name = models.CharField(max_length = 100, verbose_name = u'Судалгаа хийсэн')
+	pdf_file = models.FileField(verbose_name = u'Файл')
 
 	def __unicode__(self):
 		return unicode(self.name)
