@@ -20,7 +20,6 @@ urlpatterns = [
 	
 	url(r'^login/$', ManagerLoginView.as_view(), name = 'manager_login'),
 	url(r'^logout/$', ManagerLoginView.logout, name = 'manager_logout'),
-	#url(r'^rank_create/$', RankCreateExample.as_view(), name = 'manager_rank_create_example'),
 	
 	url(r'^news/$', ManagerNewsView.as_view(), name = 'manager_news'),
 	url(r'^news/create/$', ManagerNewsCreateView.as_view(), name = 'manager_news_create'),
@@ -55,4 +54,7 @@ urlpatterns = [
 
 	url(r'^mymodal/$', MyModal.as_view(), name='mymodal'),
 	url(r'^mymodal/update/(?P<pk>[0-9]+)/$', MyModalUpdate.as_view(), name='mymodal_update'),
+
+	url(r'competition/register/$', ManagerCompetitionRegisterView.as_view(), name = 'manager_competition_register'),
+	url(r'competition/register/(?P<id>[0-9]+)/$', manager_competition_register_view, name = 'manager_competition_register_def'),
 ]

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from django.db import models
-
+from app.user.models import SystemUser
 # Create your models here.
 
 # Тэмцээний model үүсгэх
@@ -32,5 +32,24 @@ class Competition(models.Model):
 
 	def __unicode__(self):
 		return unicode(self.rank)
+
+class CompetitionRegister(models.Model):
+	user = models.ForeignKey(SystemUser)
+	competition = models.ForeignKey(Competition)
+	status = models.BooleanField(default = False)
+	account = models.IntegerField()
+	barimt = models.ImageField()
+
+	def auto_increment(self):
+		a = CompetitionRegister.objects.count()
+		if a == None:
+			self.account = 10000001
+		else:
+			self.account = 10000001 + a
+	
+
+	def __unicode__(self):
+		return unicode(self.user)
+
 
 # temtseen uusgeh model duusav

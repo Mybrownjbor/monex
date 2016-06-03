@@ -37,4 +37,17 @@ var formAjaxSubmit = function(form, body) {
   });
 };
 
-formAjaxSubmit('#message-form', '#message-body')
+formAjaxSubmit('#message-form', '#message-body');
+
+//$('#bagts-button').click(function(){
+//  if($('#bagts-button').hasClass('marginer')){
+//    $('#bagts-button').removeClass('marginer');
+//    $('#bagts-button').css({"margin-right": "0px"}, 10);
+//    $('#bagts-body').hide();
+//  }
+//  else{
+//    $('#bagts-button').addClass('marginer');
+//    $('#bagts-button').css({"margin-right": "225px"}, 10);
+//    $('#bagts-body').show(); 
+//  }
+//});

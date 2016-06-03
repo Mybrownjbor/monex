@@ -35,7 +35,13 @@
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">{% trans 'Мэдээ ангилал засах' %}</h1>
+                <h1 class="box-title">
+                  {% if object %}
+                  {% trans 'Тэмцээний ангилал засварлах' %}
+                  {% else %}
+                  {% trans 'Тэмцээний ангилал нэмэх' %}
+                  {% endif %}
+                  </h1>
               </div>
               <form class="form-horizontal" method="post">{% csrf_token %}
                 <div class="box-body">

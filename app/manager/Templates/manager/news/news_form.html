@@ -3,19 +3,39 @@
 {% block content %}
 {% comment %}
 {% endcomment %}
+<section class="content-header">
+  <h1>{% trans 'Мэдээ' %}</h1>
+  <ol class="breadcrumb">
+    <li><a href="{% url 'manager_home' %}"><i class="fa fa-dashboard"></i> {% trans 'Нүүр' %}</a></li>
+    <li><a href="{% url 'manager_news' %}">{% trans 'Мэдээ' %}</a></li>
+    <li class="active">
+    	{% if object %}
+    	{% trans 'Мэдээ засварлах' %}
+    	{% else %}
+    	{% trans 'Мэдээ нэмэх' %}
+    	{% endif %}
+    </li>
+  </ol>
+</section>
 <div class="content">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box">
 				<div class="box-header with-border">
-					<h3 class="box-title">{% trans 'Мэдээ нэмэх' %}</h3>
+					<h3 class="box-title">
+						{% if object %}
+						{% trans 'Мэдээ засварлах' %}
+						{% else %}
+						{% trans 'Мэдээ нэмэх' %}
+						{% endif %}
+						</h3>
 				</div>
 				<form method="post">{% csrf_token %}
 					<div class="box-body">{{ form }}</div>
 					<div class="box-footer">
 						<div class="pull-right">
 							<button type="button" id="preview" data-target="#mymodal" data-toggle="modal" class="btn btn-primary btn-flat">Preview</button>
-							<button class="btn btn-success btn-flat" type="submit">Хадгалах</button>
+							<button class="btn btn-success btn-flat" type="submit">{% trans 'Хадгалах' %}</button>
 						</div>
 					</div>
 				</form>	
@@ -33,7 +53,7 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Хаах</button>
+        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">{% trans 'Хаах' %}</button>
       </div>
     </div>
   </div>

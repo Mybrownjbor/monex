@@ -14,4 +14,7 @@ urlpatterns = [
 	url(r'^competition/$', WebCompetitionCalendar.as_view(), name = 'competition_calendar'),
 	url(r'^contact/$', Contact.as_view(), name = 'contact'),
 	url(r'^calendar/$', Calendar.as_view(), name = 'calendar'),
+	url(r'^bagts/$', BagtsView.as_view(), name = 'bagts'),
+	url(r'^competition/register/(?P<id>[0-9]+)/$', WebCompetitionRegisterView.as_view(),
+		name = 'web_competition_register'),
 ]

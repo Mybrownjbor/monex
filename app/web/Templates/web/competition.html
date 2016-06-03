@@ -1,4 +1,5 @@
 {% extends 'web/base.html' %}
+{% load i18n %}
 {% load static %}
 {% block content %}
 <div class="col-md-8">
@@ -11,6 +12,54 @@
       <button class="btn-sm btn-danger" date="daterange"><i class="fa fa-calendar"></i></button>
     </div>
 		<div id="calendar" class="calendar" style="height: 1000px;"></div>
+    {% if user.is_authenticated %}
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Ангилал</th>
+          <th>Хураамж</th>
+          <th>Шагналын сан</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in object_list %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ o.rank.name }}</td>
+          <td>{{ o.rank.fee }}</td>
+          <td>
+            <a href="#shagnal{{ o.id }}" data-toggle="modal">Шагналын сан</a>
+          </td>
+          <td>
+            {% if o.competition_status == "0" %}
+            <a href="{% url 'web_competition_register' o.id %}" class="btn btn-success btn-flat">{% trans 'Бүртгүүлэх' %}</a>
+            {% elif o.competition_status == "1" %}
+            <a href="" disable = "true" class="btn btn-disable btn-flat">{% trans 'Тэмцээн эхэлсэн' %}</a>
+            {% endif %}
+          </td>
+        </tr>
+        <div class="modal fade" id="shagnal{{ o.id }}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Шагналын сан</h4>
+              </div>
+              <div class="modal-body">
+                {{ o.rank.shagnal|safe }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Хаах</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
 	</div>
 </div>
 {% endblock %}
@@ -64,84 +113,28 @@ $(function() {
         dayContextMenu: function(e) {
           $(e.element).popover('hide');
         },
-        dataSource: [
-          {
-            id: 0,
-            name: 'Google I/O',
-            location: 'Rookie',
-            startDate: new Date(currentYear, 4, 28),
-            endDate: new Date(currentYear, 4, 29)
-          },
-          {
-            id: 1,
-            name: 'Microsoft Convergence',
-            location: 'Guru',
-            startDate: new Date(currentYear, 2, 16),
-            endDate: new Date(currentYear, 2, 19)
-          },
-          {
-            id: 2,
-            name: 'Microsoft Build Developer Conference',
-            location: 'Rookie',
-            startDate: new Date(currentYear, 3, 29),
-            endDate: new Date(currentYear, 4, 1)
-          },
-          {
-            id: 3,
-            name: 'Apple Special Event',
-            location: 'Rookie',
-            startDate: new Date(currentYear, 8, 1),
-            endDate: new Date(currentYear, 8, 1)
-          },
-          {
-            id: 4,
-            name: 'Apple Keynote',
-            location: 'Rookie',
-            startDate: new Date(currentYear, 8, 9),
-            endDate: new Date(currentYear, 8, 9)
-          },
-          {
-            id: 5,
-            name: 'Chrome Developer Summit',
-            location: 'Guru',
-            startDate: new Date(currentYear, 10, 17),
-            endDate: new Date(currentYear, 10, 18)
-          },
-          {
-            id: 6,
-            name: 'F8 2015',
-            location: 'Rookie',
-            startDate: new Date(currentYear, 2, 25),
-            endDate: new Date(currentYear, 2, 26)
-          },
-          {
-            id: 7,
-            name: 'Yahoo Mobile Developer Conference',
-            location: 'Guru',
-            startDate: new Date(currentYear, 7, 25),
-            endDate: new Date(currentYear, 7, 26)
-          },
-          {
-            id: 8,
-            name: 'Android Developer Conference',
-            location: 'Guru',
-            startDate: new Date(currentYear, 11, 1),
-            endDate: new Date(currentYear, 11, 4)
-          },
-          {
-            id: 9,
-            name: 'LA Tech Summit',
-            location: 'Rookie',
-            startDate: new Date(currentYear, 10, 17),
-            endDate: new Date(currentYear, 10, 17)
-          },
-          {
-            id: 10,
-            name: 'Rookie',
-            location: 'Rookie',
-            startDate: new Date(2015, 10, 17),
-            endDate: new Date(2015, 10, 17)
+        clickDay: function(e) {
+          if(e.events.length > 0){
+            for(var i in e.events) {
+              window.location.href  = "/competition/register/"+e.events[i].id;  
+            }  
           }
+        },
+        dataSource: [
+          {% for o in object_list %}
+            {
+              id: {{ o.id }},
+              name: '{{ o.rank.name }}',
+              location: '{{ o.get_competition_status_display }}',
+              startDate: new Date({{ o.start.year }}, {{ o.start.month }} - 1, {{ o.start.day }}),
+              endDate: new Date({{ o.end.year }}, {{ o.end.month }} - 1, {{ o.end.day }}),
+              {% if o.competition_status == '0' %}
+              color:'#5cb85c'
+              {% else %}
+              color:'#337ab7'
+              {% endif %}
+            },
+          {% endfor %}
         ]
     });
 });

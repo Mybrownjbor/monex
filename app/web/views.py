@@ -1,16 +1,24 @@
 # -*- coding:utf-8 -*-
 
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView, CreateView
 from django.core.urlresolvers import reverse_lazy
-from .models import *
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .forms import BagtsForm
 from django.shortcuts import render_to_response
-from django.template import RequestContext
+
+from .forms import BagtsForm
+from .models import *
+from app.competition.models import *
+from app.competition.forms import CompetitionRegisterForm
+from app.user.models import SystemUser
+
+from django_modalview.generic.base import ModalTemplateView
+from django_modalview.generic.edit import ModalFormView, ModalCreateView, ModalUpdateView
+from django_modalview.generic.component import ModalResponse, ModalButton
+from django_modalview.generic.response import ModalJsonResponseRedirect
+
 __all__ = ['Home', 'About', 'News', 'Research', 'Lesson', 'Contact', 'NewsSelf',
-'WebCompetitionCalendar', 'Calendar', 'h404']
+'WebCompetitionCalendar', 'Calendar', 'h404', 'BagtsView', 'WebCompetitionRegisterView']
 
 
 def h404(request):
@@ -26,14 +34,10 @@ def handler500(request):
     response.status_code = 500
     return response
 
-class Home(FormView):
-	form_class = BagtsForm
-	template_name = 'web/home.html'
-	user = None
-	menu_num = 1
+class Web(object):
 
 	def get_context_data(self, *args, **kwargs):
-		context = super(Home, self).get_context_data(*args, **kwargs)
+		context = super(Web, self).get_context_data(*args, **kwargs)
 		context['corausel'] = Medee.objects.all().order_by('created_at')[:5]
 		context['medee_angilal'] = MedeeAngilal.objects.all()
 		context['sudalgaa_angilal'] = SudalgaaAngilal.objects.all()
@@ -41,9 +45,14 @@ class Home(FormView):
 		context['medee'] = Medee.objects.all().order_by('-id')[:5]
 		context['medee_most'] = Medee.objects.all().order_by('-view')[:5]
 		context['sudalgaa'] = Sudalgaa.objects.all().order_by('-id')[:5]
-		context['menu_num'] = self.menu_num
 		context['surgalt'] = Surgalt.objects.all()[:4]
+		context['menu_num'] = self.menu_num
 		return context
+
+class Home(Web, TemplateView):
+	template_name = 'web/home.html'
+	user = None
+	menu_num = 1
 
 class About(Home):
 	template_name = 'web/about.html'
@@ -54,23 +63,10 @@ class About(Home):
 		context['about'] = BidniiTuhai.objects.last()
 		return context
 
-class News(Home):
+class News(Web, ListView):
 	template_name = 'web/news.html'
 	menu_num = 4
-
-	def get_context_data(self, *args, **kwargs):
-		context = super(News, self).get_context_data()
-		news = Medee.objects.all()
-		paginator = Paginator(news, 10)
-		page = self.request.GET.get('page')
-		try:
-			news_pagination = paginator.page(page)
-		except PageNotAnInteger:
-			news_pagination = paginator.page(1)
-		except EmptyPage:
-			news_pagination = paginator.page(paginator.num_pages)
-		context['news'] = news_pagination
-		return context
+	model = Medee
 
 class NewsSelf(Home):
 	template_name = 'web/news_self.html'
@@ -98,26 +94,24 @@ class Research(Home):
 		context['sudalgaa_number'] = int(self.sudalgaa_number)
 		return context
 
-class Lesson(Home):
+class Lesson(Web, ListView):
 	template_name = 'web/lesson.html'
 	menu_num = 6
-	
-	def get_context_data(self, *args, **kwargs):
-		context = super(Lesson, self).get_context_data(*args, **kwargs)
-		context['surgalt'] = Surgalt.objects.all()
-		return context
+	model = Surgalt
 
 class Contact(Home):
+
+	template_name = 'web/contact.html'
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(Contact, self).get_context_data(*args, **kwargs)
 		context['contact'] = HolbooBarih.objects.last()
 		return context
-	template_name = 'web/contact.html'
-
-class WebCompetitionCalendar(Home):
+	
+class WebCompetitionCalendar(Web, ListView):
 	menu_num = 3
 	template_name = 'web/competition.html'
+	model = Competition
 
 class Contact(Home):
 	menu_num = 9
@@ -126,3 +120,37 @@ class Contact(Home):
 class Calendar(Home):
 	menu_num = 7
 	template_name = 'web/calendar.html'
+
+class BagtsView(ModalFormView):
+	def __init__(self, *args, **kwargs):
+		super(BagtsView, self).__init__(*args, **kwargs)
+		self.title = "Тэмцээний ангилал"
+		self.form_class = BagtsForm
+		self.submit_button = ModalButton(value=u'Хадгалах', loading_value = "Уншиж байна...",
+			button_type='success btn-flat')
+		self.close_button = ModalButton(value=u'Хаах', button_type ='default btn-flat')
+
+	def form_valid(self, form, **kwargs):
+		self.response = ModalResponse('Амжилттай хадгалагдлаа', 'success')
+		form.save()
+		self.save(form)
+		self.response = ModalResponse("{obj} is created".format(obj=self.object), 'success')
+		return super(BagtsView, self).form_valid(form, commit = False, **kwargs)
+
+class WebCompetitionRegisterView(FormView):
+	form_class = CompetitionRegisterForm
+	template_name = 'web/web_competition_register.html'
+	success_url = reverse_lazy('competition_calendar')
+
+	def form_valid(self, form):
+		object = form.save(commit = False)
+		if SystemUser.objects.filter(username = self.request.user.username) and \
+		Competition.objects.filter(id =self.kwargs['id']):	
+			object.user = SystemUser.objects.get(username = self.request.user.username)
+			object.competition = Competition.objects.get(id = self.kwargs.pop('id', None))
+			object.auto_increment()
+			object.save()
+			return super(WebCompetitionRegisterView, self).form_valid(form)
+		else:
+			return super(WebCompetitionRegisterView, self).form_invalid(form)
+		

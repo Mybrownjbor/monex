@@ -1,69 +1,37 @@
 {% extends 'web/base.html' %}
 {% block content %}
-{% comment %}
-<div class="col-md-3">
-	<div class="wall" style="border-right: 1px solid #F2F2F2;">
-		<div id="blog-sidebar" class="blog-sidebar widget-area">
-      <div class="sidebar-content">
-				<aside class="widget">
-		      <h3 class="widget-title">Mэдээ ангилал</h3><!-- /.widget-title -->
-		      <ul class="category-list">
-		        {% for i in medee_angilal %}
-		        <li>
-		        	<a href="{% url 'news' i.id %}" class="{% if news_number == i.id %}active{% endif %}">{{ i.name }}</a>
-		        </li>
-		        {% endfor %}
-		      </ul>
-		    </aside><!-- /.widget -->
-		  </div>
-    </div>
-	</div>
-</div>
-{% endcomment %}
+{% load pagination_tags %}
+{% autopaginate object_list 20 %}
 <div class="col-md-8">
 	<div class="wall">
-		<h2 class="title"> Мэдээлэл</h2>
-		<form class="form-inline">
-			<fieldset class="form-group">
-				<label>мэдээ ангилал: </label>
-		    <select class="form-control" style="width: 300px;">
-		    	<option selected>-------------</option>
-		      {% for m in medee_angilal %}
-					<option>{{ m.name }}</option>
-					{% endfor %}
-		    </select>
-		  </fieldset>
-		</form>
-	</div>
-	<div class="wall">
-		{% for m in news %}
-    <div class="wall-wall">
-			<span class="service-image"><img src="{{ m.img_url }}" alt="{{ m.img_url }}"></span>
-    	<span class="accordion-title"><a href="{% url 'news_self' m.id %}">{{ m.title|truncatechars:60 }}</a></span>
-    	<p>{{ m.remove_html|truncatechars:200|safe }}</p>
-    </div>
-    {% endfor %}
-		<nav class="text-center">
-		  <ul class="pagination">
-		  	{% if news.has_previous %}
-		    <li class="page-item">
-		      <a class="page-link" href="?page={{ news.previous_page_number }}" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		        <span class="sr-only">Previous</span>
-		      </a>
-		    </li>
-		    {% endif %}
-		    <li class="page-item active"><a class="page-link" href="?page={{ news.number }}">{{ news.number }}</a></li>
-		    {% if news.has_next %}
-		    <li class="page-item">
-		      <a class="page-link"  href="?page={{ news.next_page_number }}" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		        <span class="sr-only">Next</span>
-		      </a>
-		    </li>
-		    {% endif %}
-		  </ul>
-		</nav>
+		<h2 class="title">Мэдээлэл</h2>
+			<div class="row">
+			<div class="col-md-3">
+				<div class="wall">
+				<h3 class="title">Ангилал</h3>
+				<ul>
+					{% for m in medee_angilal %}
+					<li><a>{{ m }}</a></li><br>
+					{% endfor %}	
+				</ul>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="wall">
+					<h3 class="title">Мэдээ</h3>
+					{% for m in object_list %}
+			    <div class="wall-wall">
+						<span class="service-image"><img src="{{ m.img_url }}" alt="{{ m.img_url }}"></span>
+			    	<span class="accordion-title"><a href="{% url 'news_self' m.id %}">{{ m.title|truncatechars:60 }}</a></span>
+			    	<p>{{ m.remove_html|truncatechars:200|safe }}</p>
+			    </div>
+			    {% endfor %}
+				</div>
+				<div class="pull-right">
+			    {% paginate %}
+			  </div>
+			</div>
+		</div>
 	</div>
 </div>
 {% endblock %}

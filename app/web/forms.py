@@ -1,11 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from django import forms
-#from redactor.widgets import RedactorEditor
 from .models import *
-from app.manager.forms import RelAdd
-from django.contrib.admin.sites import AdminSite
-my_admin_site = AdminSite(name='manager_rank_create')
+from app.competition.forms import RelAdd, my_admin_site
+
 __all__ = ['BagtsForm', 'NewsForm', 'AboutForm', 'LessonForm', 'ResearchForm', 'NewsCategoryForm',
 			'LessonCategoryForm', 'ResearchCategoryForm']
 
